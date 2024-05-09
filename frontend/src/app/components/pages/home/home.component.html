@@ -1,0 +1,23 @@
+<app-search></app-search>
+<app-not-found [visible]="!foods || !foods.length"
+notFoundMessage="No hay resultados con esa búsqueda"
+></app-not-found>
+ <ul>
+    <li *ngFor="let food of foods">
+      <a class="food" routerLink="/food/{{food.id_hamburguesa}}">
+        <img class="image" [src]="food.imagen" [alt]="food.nombre"/>
+        <div class="content">
+          <div class="name">
+            {{food.nombre}}
+          </div>
+          <div class="description">
+            {{food.descripcion}}
+          </div>
+          <div class="product-item-footer">
+            <span>{{food.valor}}€</span>
+            <span>{{food.tiempo_prep}}🕛</span>
+          </div>
+        </div>
+      </a>
+    </li>
+  </ul> 

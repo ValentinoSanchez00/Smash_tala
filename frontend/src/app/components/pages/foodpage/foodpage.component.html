@@ -1,0 +1,33 @@
+<app-not-found [visible]="!food.id_hamburguesa" notFoundMessage="No se encontro el plato">
+</app-not-found>
+<div *ngIf="food.id_hamburguesa" class="container">
+
+    <img [src]="food.imagen" [alt]="food.nombre"/>
+  
+    <div class="details">
+      <div class="header">
+        <span class="name">
+          {{food.nombre}}
+        </span>
+      </div>
+  
+      <div class="cook-time">
+        <span>
+          Tiempo de preparación <strong>{{food.tiempo_prep}}</strong> minutos
+        </span>
+       
+      </div>
+      <p class="description">
+        {{food.descripcion}}
+      </p>
+      <div class="price">
+        <span>
+          {{food.valor}}€
+        </span>
+      </div>
+  
+      <button (click)="addToCart()">Añadir al carrito</button>
+      <button style="margin-top: 1rem; background-color: blue;" (click)="goBack()">volver</button>
+    </div>
+    
+  </div>

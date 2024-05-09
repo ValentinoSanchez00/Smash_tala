@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "angular-oauth2-oidc": "^17.0.2",
+    "bootstrap": "^5.3.3",
+    "tslib": "^2.6.2"
+  }
+}

@@ -1,0 +1,27 @@
+<header>
+    <div>
+        <a routerLink="/" class="logo">Bienvenido</a>
+        <img class="logo__img" src="../../../../assets/images/logo_smash.png" alt="">
+    </div>
+    <nav>
+        <ul>
+            <li><a routerLink="/">Home</a></li>
+            <li *ngIf="!load"><a routerLink="/login">Login</a></li>
+            <li [ngStyle]="{ 'display': load ? 'block' : 'none' }"  class="menu-container nav__link"><a >{{datos.nombre}}</a> 
+            <div class="menu">
+                <a routerLink="/perfil">Profile</a>
+                <a routerLink="/orders">Orders</a>
+                <a  class="nav__link" (click)="logout()">Logout</a>
+
+            </div>
+         </li> 
+        <li [ngStyle]="{ 'display': load ? 'block' : 'none' }">
+            <a routerLink="/cart">
+              Cart <span *ngIf="countCart>0">{{countCart}}</span> 
+            </a>
+        </li>
+
+
+        </ul>
+    </nav>
+</header>
