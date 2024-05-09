@@ -14,8 +14,7 @@ import { RegisterComponent } from './components/pages/register/register.componen
 import { ProfileComponent } from './components/pages/profile/profile.component';
 import { CartPageComponent } from './components/pages/cart/cart.component';
 import { NotFoundComponent } from './components/partials/not-found/not-found.component';
-
-
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -36,7 +35,8 @@ import { NotFoundComponent } from './components/partials/not-found/not-found.com
     AppRoutingModule,
     OAuthModule.forRoot(),
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   
   ],
   providers: [],
