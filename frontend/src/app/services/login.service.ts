@@ -23,4 +23,14 @@ export class LoginService {
 }
 
 
+crearUsuario(user: any): Observable<any> {
+
+  user.password=this.hashPassword(user.password);
+  console.log(user)
+
+  return this.http.post<any>(this.apiUrl, user);
+
+}
+
+
 }
