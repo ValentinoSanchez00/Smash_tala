@@ -37,7 +37,7 @@ router.post('/', (req, res) => {
   MaxId()
     .then((id) => {
       console.log("El ID máximo encontrado es:", id);
-      idUser = id;
+      idUser = id+1;
 
       const sql = 'INSERT INTO cliente (id_cliente,nombre, apellido, email, password) VALUES (?, ?, ?, ?, ?)';
 
@@ -88,7 +88,7 @@ router.delete('/:id', (req, res) => {
 
 async function MaxId() {
   return new Promise((resolve, reject) => {
-    const sql = 'SELECT MAX(id_cliente) + 1 AS id FROM cliente';
+    const sql = 'SELECT MAX(id_cliente) AS id FROM cliente';
     db.query(sql, (err, result) => {
       if (err) {
         reject(err);
