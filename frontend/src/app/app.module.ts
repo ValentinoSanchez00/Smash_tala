@@ -14,6 +14,11 @@ import { RegisterComponent } from './components/pages/register/register.componen
 import { ProfileComponent } from './components/pages/profile/profile.component';
 import { CartPageComponent } from './components/pages/cart/cart.component';
 import { NotFoundComponent } from './components/partials/not-found/not-found.component';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+
 
 
 
@@ -29,14 +34,20 @@ import { NotFoundComponent } from './components/partials/not-found/not-found.com
     RegisterComponent,
     ProfileComponent,
     CartPageComponent,
-    NotFoundComponent
+    NotFoundComponent,
+
+  
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     OAuthModule.forRoot(),
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatIconModule
   
   ],
   providers: [],

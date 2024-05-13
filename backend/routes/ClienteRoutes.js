@@ -31,16 +31,30 @@ router.get('/comprobar', (req, res) => {
 
 // Agregar un nuevo cliente
 router.post('/', (req, res) => {
-  const { nombre, email, password } = req.body;
-  const sql = 'INSERT INTO cliente (nombre, email, password) VALUES (?, ?, ?)';
+  const { nombre, apellido, email, password } = req.body;
+  let idUser = 0;
 
-  db.query(sql, [nombre, email, password], (err, result) => {
-    if (err) {
-      res.status(500).json({ error: 'Error al agregar el cliente' });
-    } else {
-      res.status(201).json({ message: 'Cliente agregado correctamente' });
-    }
-  });
+  MaxId()
+    .then((id) => {
+      console.log("El ID máximo encontrado es:", id);
+      idUser = id;
+
+      const sql = 'INSERT INTO cliente (id_cliente,nombre, apellido, email, password) VALUES (?, ?, ?, ?, ?)';
+
+      db.query(sql, [idUser, nombre, apellido, email, password], (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({ error: 'Error al agregar el cliente' });
+        } else {
+          console.log(result);
+          res.status(201).json({ message: 'Cliente agregado correctamente' });
+        }
+      });
+    })
+    .catch((error) => {
+      console.error("Ocurrió un error al obtener el ID máximo:", error);
+      res.status(500).json({ error: 'Error al obtener el ID máximo' });
+    });
 });
 
 // Actualizar un cliente existente
@@ -71,5 +85,25 @@ router.delete('/:id', (req, res) => {
     }
   });
 });
+
+async function MaxId() {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT MAX(id_cliente) + 1 AS id FROM cliente';
+    db.query(sql, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        if (result.length > 0) {
+          const id = result[0].id;
+          console.log("Se devuelve la id:", id);
+          resolve(id);
+        } else {
+          console.log("No se encontraron resultados.");
+          resolve(null);
+        }
+      }
+    });
+  });
+}
 
 module.exports = router;

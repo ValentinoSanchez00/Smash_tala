@@ -101,7 +101,7 @@ img{
   color: darkgrey;
 }
 
-button{
+.button__add{
   color: white;
   background: #e72929;
   border: none;
@@ -117,4 +117,15 @@ button:hover{
 }
 .description{
   margin-top: 2rem;
+}
+.info{
+  border: 1px solid transparent;
+  width: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  background-color: transparent;
 }
