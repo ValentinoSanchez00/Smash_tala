@@ -3,6 +3,7 @@ const cors = require('cors');
 const clienteRoutes = require('./routes/ClienteRoutes');
 const hamburguesaRoutes = require('./routes/HamburguesaRoutes');
 const alergenoRoutes = require('./routes/AlergenoRoutes');
+const ingredientesRoutes = require('./routes/IngredienteRoutes');
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(express.json());
 app.use('/cliente', clienteRoutes);
 app.use('/hamburguesa', hamburguesaRoutes);
 app.use('/alergenos', alergenoRoutes);
+app.use('/ingredientes', ingredientesRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor en funcionamiento en el puerto ${PORT}`));
