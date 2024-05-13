@@ -46,6 +46,24 @@ router.get('/:id', (req, res) => {
     res.json(results[0]);
   });
 });
+router.get('/:id/ingredientes-alergenos', (req, res) => {
+  const { id } = req.params;
+  // Realiza la consulta a la base de datos para obtener los ingredientes de la hamburguesa con alérgenos
+  db.query(`
+    SELECT i.nombre AS ingrediente, a.tipo_alergeno AS alergeno
+    FROM hamburguesa_tiene_ingrediente h
+    JOIN ingrediente i ON h.ingrediente_id_ingrediente = i.id_ingrediente
+    LEFT JOIN alergenos a ON i.alergenos_id_alergeno = a.id_alergeno
+    WHERE h.hamburguesa_id_hamburguesa = ?
+  `, [id], (err, results) => {
+    if (err) {
+      console.error('Error al obtener ingredientes con alérgenos de la hamburguesa:', err);
+      return res.status(500).json({ error: 'Error al obtener ingredientes con alérgenos de la hamburguesa' });
+    }
+    res.json(results);
+  });
+});
+
 
 // Crear una nueva hamburguesa
 router.post('/', (req, res) => {
