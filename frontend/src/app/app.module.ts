@@ -15,6 +15,12 @@ import { ProfileComponent } from './components/pages/profile/profile.component';
 import { CartPageComponent } from './components/pages/cart/cart.component';
 import { NotFoundComponent } from './components/partials/not-found/not-found.component';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+
+
+
 
 
 @NgModule({
@@ -28,7 +34,9 @@ import { FormsModule } from '@angular/forms';
     RegisterComponent,
     ProfileComponent,
     CartPageComponent,
-    NotFoundComponent
+    NotFoundComponent,
+
+  
   ],
   imports: [
     BrowserModule,
@@ -36,7 +44,10 @@ import { FormsModule } from '@angular/forms';
     OAuthModule.forRoot(),
     HttpClientModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatIconModule
   
   ],
   providers: [],

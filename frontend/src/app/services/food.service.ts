@@ -26,5 +26,11 @@ export class FoodService {
     return this.http.get<Hamburguer[]>(`${this.apiUrl}/${foodId}`);
   }
 
+  getAlergenos(foodId: number):Observable<any>{
+    return this.http.get<any>(`http://localhost:3000/hamburguesa/${foodId}/ingredientes-alergenos`);
+  }
+
+
+
 
 }

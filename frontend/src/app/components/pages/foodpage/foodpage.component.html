@@ -2,32 +2,52 @@
 </app-not-found>
 <div *ngIf="food.id_hamburguesa" class="container">
 
-    <img [src]="food.imagen" [alt]="food.nombre"/>
-  
-    <div class="details">
-      <div class="header">
-        <span class="name">
-          {{food.nombre}}
-        </span>
-      </div>
-  
-      <div class="cook-time">
-        <span>
-          Tiempo de preparación <strong>{{food.tiempo_prep}}</strong> minutos
-        </span>
-       
-      </div>
-      <p class="description">
-        {{food.descripcion}}
-      </p>
-      <div class="price">
-        <span>
-          {{food.valor}}€
-        </span>
-      </div>
-  
-      <button (click)="addToCart()">Añadir al carrito</button>
-      <button style="margin-top: 1rem; background-color: blue;" (click)="goBack()">volver</button>
+  <img [src]="food.imagen" [alt]="food.nombre" />
+
+  <div class="details">
+    <div class="header">
+      <span class="name">
+        {{food.nombre}}
+      </span>
     </div>
-    
+
+    <div class="cook-time">
+      <span>
+        Tiempo de preparación <strong>{{food.tiempo_prep}}</strong> minutos
+      </span>
+
+    </div>
+    <p class="description">
+      {{food.descripcion}}
+
+    </p>
+    <button class="info"  mat-icon-button (click)="abrirModal()">
+      <mat-icon >info</mat-icon>
+    </button>
+    <div [style.display]="openModal ? 'block' : 'none'" class="mt-2">
+      <h2>Información de Alergenos:</h2>
+      <p>Este prodcuto tiene los siguientes ingredientes que contienen datos para consumo</p>
+      <ul>
+        <li *ngFor="let aler of alergenos">
+          <span *ngIf="aler.alergeno === 'Vegano'; else notVegano">
+            El ingrediente {{ aler.ingrediente }} es vegano
+          </span>
+          <ng-template #notVegano>
+            El ingrediente {{ aler.ingrediente }} contiene {{ aler.alergeno }}
+          </ng-template>
+        </li>
+        
+      </ul>
+    </div>
+
+    <div class="price">
+      <span>
+        {{food.valor}}€
+      </span>
+    </div>
+
+    <button class="button__add" [style.display]="isLogin ? 'block' : 'none'" (click)="addToCart()">Añadir al carrito</button>
+    <button class="button__add" style="margin-top: 1rem; background-color: blue;" (click)="goBack()">volver</button>
   </div>
+
+</div>

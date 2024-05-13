@@ -13,15 +13,35 @@ import { Hamburguer } from 'src/app/shared/models/Food';
 export class FoodpageComponent {
 
 food!:any;
+isLogin!:any;
+openModal: boolean = false;
+alergenos!:any;
 constructor(private FoodService:FoodService,activatedRoute:ActivatedRoute, private cartService:CartService, private router:Router)  {
   activatedRoute.params.subscribe(params => {
     this.FoodService.getFoodById(params.id).subscribe((data: any) => {
       this.food = data; 
-      console.log(this.food); 
     });
+
+this.FoodService.getAlergenos(params.id).subscribe((data: any) => {
+    this.alergenos = data;
+    this.alergenos=this.alergenos.filter((alergeno:any)=>{
+      return alergeno.alergeno!=null
+    });
+    console.log(this.alergenos)
   });
   
+  
+ this.isLogin= sessionStorage.getItem('isLoad');
+console.log(this.isLogin)
+  if(this.isLogin==null){
+    this.isLogin=false;
   }
+  else{
+    this.isLogin=true;
+  }
+
+  });
+}
 
   ngOnInit(): void {
     
@@ -40,5 +60,9 @@ constructor(private FoodService:FoodService,activatedRoute:ActivatedRoute, priva
 
 
   }
+
+  abrirModal() {
+   this.openModal = !this.openModal;
 }
 
+}
