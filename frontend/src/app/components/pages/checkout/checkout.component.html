@@ -1,0 +1,35 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-between align-items-center">
+            <h1 class="mt-2">Procedimiento de pedido</h1>
+            <div class="mt-5 mb-5">
+                <div class="m-2 form-group">
+                    <label for="direccionEnvio">1. Dirección de envío</label>
+                    <input *ngIf="!usarDireccionGuardada" type="text" class="form-control" id="direccionEnvio" [(ngModel)]="direccionEnvio">
+                    <span *ngIf="usarDireccionGuardada && direcciones.length > 0">
+                        <p>Elija una dirección guardada</p>
+                        <select name="direccionGuardada" id="direccionGuardada" class="form-control" [(ngModel)]="direccionEnvio">
+                            <option *ngFor="let dir of direcciones" [value]="dir.direccion">{{ dir.direccion }}</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="m-2 form-group">
+                    <input type="checkbox" id="usarDireccionGuardada" [(ngModel)]="usarDireccionGuardada">
+                    <label for="usarDireccionGuardada">Usar dirección guardada</label>
+                </div>
+                <div class="m-2 form-group">
+                    <label for="metodoPago">2. Método de pago</label>
+                    <select class="form-control" id="metodoPago" [(ngModel)]="metodoPago">
+                        <option value="tarjeta">Tarjeta de crédito/débito</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="transferencia">Transferencia bancaria</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="col">
+            2 of 2
+        </div>
+    </div>
+</div>

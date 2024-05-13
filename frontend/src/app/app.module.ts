@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { CheckoutComponent } from './components/pages/checkout/checkout.component';
 
 
 
@@ -35,6 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
     ProfileComponent,
     CartPageComponent,
     NotFoundComponent,
+    CheckoutComponent,
 
   
   ],

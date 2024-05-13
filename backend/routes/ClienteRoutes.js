@@ -15,6 +15,8 @@ router.get('/', (req, res) => {
   });
 });
 
+//comprueba si hay cliente con el usuario y contraseña
+
 router.get('/comprobar', (req, res) => {
   const { correo, contraseña } = req.query;
   const sql = `SELECT * FROM cliente WHERE email = "${correo}" AND password = "${contraseña}"`;
@@ -27,6 +29,22 @@ router.get('/comprobar', (req, res) => {
     }
   });
 });
+
+
+//Obtiene las casas registradas de un cliente por su id
+router.get('/casa/:id', (req, res) => {
+  const { id } = req.params;
+  const sql = 'SELECT * FROM casa WHERE id_casa in(SELECT id_casa FROM cliente_tiene_casa WHERE id_cliente = ? );';
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: 'Error al obtener los clientes: '+err });
+    } else {
+      console.log(result);
+      res.json(result);
+    }
+  });
+});
+
 
 
 // Agregar un nuevo cliente
