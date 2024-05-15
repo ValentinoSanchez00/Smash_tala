@@ -3,7 +3,6 @@ import { CartService } from 'src/app/services/cart.service';
 import { ClientesService } from './../../../services/clientes.service';
 import { CartModule } from 'src/app/shared/models/cart.module';
 
-
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
@@ -17,7 +16,8 @@ export class CheckoutComponent {
   direccionEnvio: any = '';
   metodoEnvio: string = '';
   metodoPago: string = '';
-  usarDireccionGuardada: boolean = false; // Variable para controlar la visibilidad del input y el select
+  usarDireccionGuardada: boolean = false;
+  validate: boolean = false;
 
   constructor(private cartService: CartService, private clientesService: ClientesService) {
     this.cartService.getCartObservable().subscribe((cart) => {
@@ -28,14 +28,23 @@ export class CheckoutComponent {
     let user = sessionStorage.getItem('user');
     if (user) {
       this.id_cliente = JSON.parse(user).id_cliente;
-      console.log(this.id_cliente);
     }
 
     this.clientesService.getCasaClientes(this.id_cliente).subscribe((data) => {
       this.direcciones = data;
-      console.log(this.direcciones);
     });
   }
 
+  checkInputs(): void {
+    if (this.direccionEnvio.trim() !== '' && this.metodoEnvio.trim() !== '') {
+      this.validate = true;
+    } else {
+      this.validate = false;
+      console.log(this.direccionEnvio, this.metodoEnvio);
+    }
+  }
 
+  placeOrder() {
+    
+  }
 }
