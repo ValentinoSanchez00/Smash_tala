@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { ClientesService } from './../../../services/clientes.service';
 import { CartModule } from 'src/app/shared/models/cart.module';
-
+import { PedidoService } from 'src/app/services/pedido.service';
 
 @Component({
   selector: 'app-checkout',
@@ -14,28 +14,51 @@ export class CheckoutComponent {
   id_cliente!: any;
   pedido!: any;
   direcciones: any[] = [];
-  direccionEnvio: any = '';
-  metodoEnvio: string = '';
-  metodoPago: string = '';
-  usarDireccionGuardada: boolean = false; // Variable para controlar la visibilidad del input y el select
+  usarDireccionGuardada: boolean = false;
+  validate: boolean = false;
 
-  constructor(private cartService: CartService, private clientesService: ClientesService) {
+
+  metodoPago: string = '';
+  direccionEnvio: any = '';
+  constructor(private cartService: CartService, private clientesService: ClientesService, private pedidoService: PedidoService) {
     this.cartService.getCartObservable().subscribe((cart) => {
       this.cart = cart;
-      console.log(this.cart);
     });
 
     let user = sessionStorage.getItem('user');
     if (user) {
       this.id_cliente = JSON.parse(user).id_cliente;
-      console.log(this.id_cliente);
     }
 
     this.clientesService.getCasaClientes(this.id_cliente).subscribe((data) => {
       this.direcciones = data;
-      console.log(this.direcciones);
     });
   }
 
+  checkInputs(): void {
+    if (this.direccionEnvio.trim() !== ''&& this.metodoPago.trim() !== '') {
+      this.validate = true;
+    } else {
+      this.validate = false;
+    }
+}
 
+
+  placeOrder() {
+    let pedido = {
+      id_cliente:this.id_cliente,
+      direccion: this.direccionEnvio,
+      tipo_pago: this.metodoPago,
+      contenido: this.cart,
+    }
+    this.pedidoService.crearPedido(pedido).subscribe((data) => {
+      console.log(data);
+      if (data) {
+        this.cartService.clearCart();
+        alert('Pedido realizado con éxito');
+      }
+    })
+
+    
+  }
 }
