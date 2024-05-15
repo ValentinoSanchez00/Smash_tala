@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-05-2024 a las 12:43:05
+-- Tiempo de generación: 15-05-2024 a las 14:26:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -39,7 +39,8 @@ CREATE TABLE `alergenos` (
 INSERT INTO `alergenos` (`id_alergeno`, `tipo_alergeno`) VALUES
 (1, 'Gluten'),
 (2, 'Lactosa'),
-(3, 'Frutos secos');
+(3, 'Frutos secos'),
+(4, 'Vegano');
 
 -- --------------------------------------------------------
 
@@ -93,18 +94,22 @@ INSERT INTO `casa` (`id_casa`, `direccion`) VALUES
 CREATE TABLE `cliente` (
   `id_cliente` int(11) NOT NULL,
   `nombre` varchar(33) NOT NULL DEFAULT current_timestamp(),
+  `apellido` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(32) NOT NULL
+  `password` varchar(200) NOT NULL,
+  `rol` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`id_cliente`, `nombre`, `email`, `password`) VALUES
-(1, 'Juan Perez', 'juan@example.com', 'password123'),
-(2, 'María García', 'maria@example.com', 'securepwd'),
-(3, 'Carlos Rodríguez', 'carlos@example.com', 'mysecretpassword');
+INSERT INTO `cliente` (`id_cliente`, `nombre`, `apellido`, `email`, `password`, `rol`) VALUES
+(0, 'Valentino', 'Sanchez Raverta', 'vsanchez@yopmail.com', '51cb69e002770bcbb2f0616ff5196a573845e2ae927c7f2d67b1246ffd20c860', 0),
+(1, 'Juan', 'Perez', 'juan@example.com', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f', 0),
+(2, 'María ', 'García', 'maria@example.com', '68256910bc07ec7457bcb7f4374e43ab5c98eda8d8eb8e1e53d6e33a47e8afe3', 0),
+(3, 'Valentino ', 'Sanchez', 'vsanchez@up-spain.com', '51cb69e002770bcbb2f0616ff5196a573845e2ae927c7f2d67b1246ffd20c860', 0),
+(4, 'Chef Master', 'Sanchez', 'chefmaster@example.com', 'ebd84f62cc5b9821bf96e5acc4c4593e18915bdaab44155641bbb25beed2b490', 1);
 
 -- --------------------------------------------------------
 
@@ -130,6 +135,27 @@ INSERT INTO `cliente_pide_pedido` (`cliente_id_cliente`, `pedido_id_pedido`, `fe
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `cliente_tiene_casa`
+--
+
+CREATE TABLE `cliente_tiene_casa` (
+  `id_cliente` int(11) NOT NULL,
+  `id_casa` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cliente_tiene_casa`
+--
+
+INSERT INTO `cliente_tiene_casa` (`id_cliente`, `id_casa`) VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(3, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `cocineros`
 --
 
@@ -137,10 +163,16 @@ CREATE TABLE `cocineros` (
   `id_cocineros` int(11) NOT NULL,
   `nombre` varchar(16) DEFAULT NULL,
   `edad` int(11) DEFAULT NULL,
-  `correo` varchar(45) DEFAULT NULL,
-  `password` varchar(32) DEFAULT NULL,
-  `jefe_id_jefe` int(11) DEFAULT NULL
+  `jefe_id_jefe` int(11) DEFAULT NULL,
+  `cliente_id_cliente` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cocineros`
+--
+
+INSERT INTO `cocineros` (`id_cocineros`, `nombre`, `edad`, `jefe_id_jefe`, `cliente_id_cliente`) VALUES
+(0, 'Chef Master', 25, NULL, 4);
 
 -- --------------------------------------------------------
 
@@ -152,18 +184,21 @@ CREATE TABLE `hamburguesa` (
   `id_hamburguesa` int(11) NOT NULL,
   `nombre` varchar(255) DEFAULT NULL,
   `tipo` varchar(45) DEFAULT NULL,
+  `descripcion` varchar(200) NOT NULL,
   `valor` float DEFAULT NULL,
-  `coste` float DEFAULT NULL
+  `coste` float DEFAULT NULL,
+  `imagen` varchar(100) NOT NULL,
+  `tiempo_prep` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `hamburguesa`
 --
 
-INSERT INTO `hamburguesa` (`id_hamburguesa`, `nombre`, `tipo`, `valor`, `coste`) VALUES
-(1, 'Hamburguesa Clásica', 'Clásica', 8.99, 3.5),
-(2, 'Hamburguesa BBQ', 'BBQ', 10.99, 4.2),
-(3, 'Hamburguesa Vegana', 'Vegana', 9.99, 3.8);
+INSERT INTO `hamburguesa` (`id_hamburguesa`, `nombre`, `tipo`, `descripcion`, `valor`, `coste`, `imagen`, `tiempo_prep`) VALUES
+(1, 'Hamburguesa Clásica', 'Clásica', 'Una suculenta hamburguesa con carne jugosa, queso derretido, lechuga fresca y salsa especial en un pan tierno y tostado', 8.99, 3.5, './assets/images/hamb1.jpg', 10),
+(2, 'Hamburguesa BBQ', 'BBQ', ' Deliciosa hamburguesa con salsa BBQ ahumada, cebolla caramelizada, bacon crujiente, queso cheddar fundido y pepinillos en un pan tostado.', 10.99, 4.2, './assets/images/hamb3.jpg', 15),
+(3, 'Hamburguesa Vegana', 'Vegana', 'Hamburguesa vegana con rebozado crujiente de garbanzos, acompañada de aguacate, tomate, espinacas frescas y mayonesa vegana en un pan integral.', 9.99, 3.8, './assets/images/hamb2.jpg', 15);
 
 -- --------------------------------------------------------
 
@@ -182,8 +217,23 @@ CREATE TABLE `hamburguesa_tiene_ingrediente` (
 
 INSERT INTO `hamburguesa_tiene_ingrediente` (`ingrediente_id_ingrediente`, `hamburguesa_id_hamburguesa`) VALUES
 (1, 1),
+(1, 2),
+(2, 1),
 (2, 2),
-(3, 3);
+(3, 1),
+(3, 3),
+(4, 2),
+(5, 1),
+(6, 2),
+(7, 2),
+(8, 2),
+(9, 2),
+(11, 3),
+(12, 3),
+(13, 1),
+(14, 3),
+(15, 3),
+(16, 3);
 
 -- --------------------------------------------------------
 
@@ -204,8 +254,21 @@ CREATE TABLE `ingrediente` (
 
 INSERT INTO `ingrediente` (`id_ingrediente`, `nombre`, `kal`, `alergenos_id_alergeno`) VALUES
 (1, 'Pan', 200, 1),
-(2, 'Carne de res', 300, NULL),
-(3, 'Lechuga', 10, NULL);
+(2, 'Carne', 300, NULL),
+(3, 'Lechuga', 10, NULL),
+(4, 'queso', 10, 2),
+(5, 'salsa especial', 10, 2),
+(6, 'salsa bbq', 10, 2),
+(7, 'bacon', 10, 1),
+(8, 'cebolla caramelizada', 10, 1),
+(9, 'pepinillos', 10, NULL),
+(10, 'hamburguesa vegana', 10, 4),
+(11, 'garbanzos', 10, 4),
+(12, 'aguacate', 10, 4),
+(13, 'tomate\r\n', 10, 4),
+(14, 'espinacas\r\n', 10, 4),
+(15, 'mayonesa vegana\r\n', 10, 4),
+(16, 'pan integral\r\n', 10, 4);
 
 -- --------------------------------------------------------
 
@@ -365,6 +428,13 @@ ALTER TABLE `cliente_pide_pedido`
   ADD KEY `fk_cliente_has_pedido_cliente_idx` (`cliente_id_cliente`);
 
 --
+-- Indices de la tabla `cliente_tiene_casa`
+--
+ALTER TABLE `cliente_tiene_casa`
+  ADD PRIMARY KEY (`id_cliente`,`id_casa`),
+  ADD KEY `id_casa` (`id_casa`);
+
+--
 -- Indices de la tabla `cocineros`
 --
 ALTER TABLE `cocineros`
@@ -447,6 +517,13 @@ ALTER TABLE `pedido_has_cocineros`
 ALTER TABLE `cliente_pide_pedido`
   ADD CONSTRAINT `fk_cliente_has_pedido_cliente` FOREIGN KEY (`cliente_id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_cliente_has_pedido_pedido1` FOREIGN KEY (`pedido_id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `cliente_tiene_casa`
+--
+ALTER TABLE `cliente_tiene_casa`
+  ADD CONSTRAINT `cliente_tiene_casa_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
+  ADD CONSTRAINT `cliente_tiene_casa_ibfk_2` FOREIGN KEY (`id_casa`) REFERENCES `casa` (`id_casa`);
 
 --
 -- Filtros para la tabla `cocineros`
