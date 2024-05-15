@@ -5,39 +5,38 @@
             <div class="mt-5 mb-5">
                 <div class=" form-group">
                     <label for="direccionEnvio">1. Dirección de envío</label>
-                    <input *ngIf="!usarDireccionGuardada" type="text" class="form-control" id="direccionEnvio" [(ngModel)]="direccionEnvio">
+                    <input *ngIf="!usarDireccionGuardada" type="text" class="form-control" id="direccionEnvio" [(ngModel)]="direccionEnvio" (ngModelChange)="checkInputs()">
                     <span *ngIf="usarDireccionGuardada && direcciones.length > 0">
                         <p>Elija una dirección guardada</p>
-                        <select name="direccionGuardada" id="direccionGuardada" class="form-control" [(ngModel)]="direccionEnvio">
+                        <select name="direccionGuardada" id="direccionGuardada" class="form-control" [(ngModel)]="direccionEnvio" (ngModelChange)="checkInputs()">
                             <option *ngFor="let dir of direcciones" [value]="dir.direccion">{{ dir.direccion }}</option>
                         </select>
                     </span>
                 </div>
                 <div class="m-2 form-group">
-                    <input type="checkbox" id="usarDireccionGuardada" [(ngModel)]="usarDireccionGuardada">
+                    <input type="checkbox" id="usarDireccionGuardada" [(ngModel)]="usarDireccionGuardada" (ngModelChange)="checkInputs()">
                     <label for="usarDireccionGuardada">Usar dirección guardada</label>
                 </div>
                 <div class=" form-group">
                     <label for="metodoPago">2. Método de pago</label>
-                    <select class="form-control" id="metodoPago" [(ngModel)]="metodoPago">
-                        <option value="efectivo">Pagar en efectivo</option>
-                        <option value="tarjeta">PayPal/Tarjeta de crédito o débito</option>
-                        
+                    <select class="form-control" id="metodoPago" [(ngModel)]="metodoPago" (ngModelChange)="checkInputs()">
+                        <option value="efectivo" >Pagar en efectivo</option>
+                        <option value="tarjeta" disabled>PayPal/Tarjeta de crédito o débito</option>
                     </select>
                 </div>
 
             </div>
         </div>
         <div class="col">
-        <h1 class="mt-2 text-center">Resumen pedido</h1>
-        <div>
-            <h2>Total de platos: {{cart.totalCount}}</h2>
-            <ul>
-                <li *ngFor="let item of cart.items"> {{item.food.nombre}} x {{item.quantity}} = {{item.price}}€</li>
-            </ul>
-            <h2 class="mt-5">Total: {{cart.totalPrice}}€</h2>
-            <button [disabled]="cart.totalCount < 0 || !validate" class="btn button_order" (click)="placeOrder()">Realizar pedido</button>
-        </div>
+            <h1 class="mt-2 text-center">Resumen pedido</h1>
+            <div>
+                <h2>Total de platos: {{cart.totalCount}}</h2>
+                <ul>
+                    <li *ngFor="let item of cart.items"> {{item.food.nombre}} x {{item.quantity}} = {{item.price}}€</li>
+                </ul>
+                <h2 class="mt-5">Total: {{cart.totalPrice}}€</h2>
+                <button [disabled]="cart.totalCount < 0 || !validate" class="btn button_order" (click)="placeOrder()">Realizar pedido</button>
+            </div>
 
         </div>
     </div>
