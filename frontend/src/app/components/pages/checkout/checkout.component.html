@@ -3,7 +3,7 @@
         <div class="col d-flex flex-column justify-content-between align-items-center">
             <h1 class="mt-2">Procedimiento de pedido</h1>
             <div class="mt-5 mb-5">
-                <div class="m-2 form-group">
+                <div class=" form-group">
                     <label for="direccionEnvio">1. Dirección de envío</label>
                     <input *ngIf="!usarDireccionGuardada" type="text" class="form-control" id="direccionEnvio" [(ngModel)]="direccionEnvio">
                     <span *ngIf="usarDireccionGuardada && direcciones.length > 0">
@@ -17,19 +17,28 @@
                     <input type="checkbox" id="usarDireccionGuardada" [(ngModel)]="usarDireccionGuardada">
                     <label for="usarDireccionGuardada">Usar dirección guardada</label>
                 </div>
-                <div class="m-2 form-group">
+                <div class=" form-group">
                     <label for="metodoPago">2. Método de pago</label>
                     <select class="form-control" id="metodoPago" [(ngModel)]="metodoPago">
-                        <option value="tarjeta">Tarjeta de crédito/débito</option>
-                        <option value="paypal">PayPal</option>
-                        <option value="transferencia">Transferencia bancaria</option>
+                        <option value="efectivo">Pagar en efectivo</option>
+                        <option value="tarjeta">PayPal/Tarjeta de crédito o débito</option>
+                        
                     </select>
                 </div>
 
             </div>
         </div>
         <div class="col">
-            2 of 2
+        <h1 class="mt-2 text-center">Resumen pedido</h1>
+        <div>
+            <h2>Total de platos: {{cart.totalCount}}</h2>
+            <ul>
+                <li *ngFor="let item of cart.items"> {{item.food.nombre}} x {{item.quantity}} = {{item.price}}€</li>
+            </ul>
+            <h2 class="mt-5">Total: {{cart.totalPrice}}€</h2>
+            <button [disabled]="cart.totalCount < 0 || !validate" class="btn button_order" (click)="placeOrder()">Realizar pedido</button>
+        </div>
+
         </div>
     </div>
 </div>
