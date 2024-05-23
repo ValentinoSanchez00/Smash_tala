@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 // Obtener todos los pedidos de un cliente
 router.get('/cliente/:id', (req, res) => {
     const { id } = req.params;
-    db.query('SELECT * FROM pedido WHERE cliente_id = ?', [id], (err, results) => {
+    db.query('SELECT p.id_pedido, p.coste, p.tipo_pago, p.fecha, GROUP_CONCAT(DISTINCT h.nombre ORDER BY h.nombre ASC) AS hamburguesa, GROUP_CONCAT(DISTINCT a.tipo_alergeno ORDER BY a.tipo_alergeno ASC) AS alergenos FROM pedido p INNER JOIN pedido_esta_hamburguesa peh ON p.id_pedido = peh.pedido_id_pedido INNER JOIN hamburguesa h ON peh.hamburguesa_id_hamburguesa = h.id_hamburguesa LEFT JOIN hamburguesa_tiene_ingrediente hti ON h.id_hamburguesa = hti.hamburguesa_id_hamburguesa LEFT JOIN ingrediente i ON hti.ingrediente_id_ingrediente = i.id_ingrediente LEFT JOIN alergenos a ON i.alergenos_id_alergeno = a.id_alergeno WHERE p.cliente_id_cliente = ? GROUP BY p.id_pedido ORDER BY p.id_pedido ASC;', [id], (err, results) => {
         if (err) {
             console.error('Error al obtener los pedidos:', err);
             return res.status(500).json({ error: 'Error al obtener los pedidos' });
@@ -29,12 +29,13 @@ router.get('/cliente/:id', (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const id_pedido = await MaxIdPedido() + 1;
-   
+
         const id_casa = await compareDireccion(req.body.direccion, req.body.id_cliente);
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0];
+        const sql = 'INSERT INTO pedido (id_pedido,coste, cliente_id_cliente, casa_id_casa,tipo_pago,fecha) VALUES (?, ?, ?,?,?,?)';
 
-        const sql = 'INSERT INTO pedido (id_pedido,coste, cliente_id_cliente, casa_id_casa,tipo_pago) VALUES (?, ?, ?,?,?)';
-
-        db.query(sql, [id_pedido, req.body.contenido.totalPrice, req.body.id_cliente, id_casa, req.body.tipo_pago], (err, result) => {
+        db.query(sql, [id_pedido, req.body.contenido.totalPrice, req.body.id_cliente, id_casa, req.body.tipo_pago, formattedDate], (err, result) => {
             if (err) {
                 console.error('Error al insertar el pedido:', err);
                 return res.status(500).json({ error: 'Error al insertar el pedido' });

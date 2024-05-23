@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-05-2024 a las 14:26:13
+-- Tiempo de generación: 23-05-2024 a las 10:22:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,29 +41,6 @@ INSERT INTO `alergenos` (`id_alergeno`, `tipo_alergeno`) VALUES
 (2, 'Lactosa'),
 (3, 'Frutos secos'),
 (4, 'Vegano');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `bebida`
---
-
-CREATE TABLE `bebida` (
-  `id_bebida` int(11) NOT NULL,
-  `nombre` varchar(255) DEFAULT NULL,
-  `tipo` varchar(45) DEFAULT NULL,
-  `valor` float DEFAULT NULL,
-  `coste` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `bebida`
---
-
-INSERT INTO `bebida` (`id_bebida`, `nombre`, `tipo`, `valor`, `coste`) VALUES
-(1, 'Refresco de cola', 'Refresco', 2.5, 0.8),
-(2, 'Agua mineral', 'Agua', 1.5, 0.4),
-(3, 'Jugo de naranja', 'Jugo', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -110,27 +87,6 @@ INSERT INTO `cliente` (`id_cliente`, `nombre`, `apellido`, `email`, `password`, 
 (2, 'María ', 'García', 'maria@example.com', '68256910bc07ec7457bcb7f4374e43ab5c98eda8d8eb8e1e53d6e33a47e8afe3', 0),
 (3, 'Valentino ', 'Sanchez', 'vsanchez@up-spain.com', '51cb69e002770bcbb2f0616ff5196a573845e2ae927c7f2d67b1246ffd20c860', 0),
 (4, 'Chef Master', 'Sanchez', 'chefmaster@example.com', 'ebd84f62cc5b9821bf96e5acc4c4593e18915bdaab44155641bbb25beed2b490', 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `cliente_pide_pedido`
---
-
-CREATE TABLE `cliente_pide_pedido` (
-  `cliente_id_cliente` int(11) NOT NULL,
-  `pedido_id_pedido` int(11) NOT NULL,
-  `fecha` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `cliente_pide_pedido`
---
-
-INSERT INTO `cliente_pide_pedido` (`cliente_id_cliente`, `pedido_id_pedido`, `fecha`) VALUES
-(1, 1, '2024-05-01'),
-(2, 2, '2024-05-02'),
-(3, 3, '2024-05-03');
 
 -- --------------------------------------------------------
 
@@ -313,9 +269,7 @@ CREATE TABLE `log` (
 --
 
 INSERT INTO `log` (`category_id`, `id_log`, `fecha`, `contenido`) VALUES
-(1, 1, '2024-05-01', 'Registro 1'),
-(2, 2, '2024-05-02', 'Registro 2'),
-(3, 3, '2024-05-03', 'Registro 3');
+(1, 1, '2024-05-01', 'Registro 1');
 
 -- --------------------------------------------------------
 
@@ -327,37 +281,23 @@ CREATE TABLE `pedido` (
   `id_pedido` int(11) NOT NULL,
   `coste` float DEFAULT NULL,
   `cliente_id_cliente` int(11) DEFAULT NULL,
-  `casa_id_casa` int(11) DEFAULT NULL
+  `casa_id_casa` int(11) DEFAULT NULL,
+  `tipo_pago` varchar(50) NOT NULL,
+  `fecha` date DEFAULT '2024-01-01'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pedido`
 --
 
-INSERT INTO `pedido` (`id_pedido`, `coste`, `cliente_id_cliente`, `casa_id_casa`) VALUES
-(1, 15.5, 1, 1),
-(2, 12.25, 2, 2),
-(3, 18.75, 3, 3);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `pedido_esta_bebida`
---
-
-CREATE TABLE `pedido_esta_bebida` (
-  `pedido_id_pedido` int(11) NOT NULL,
-  `bebida_id_bebida` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `pedido_esta_bebida`
---
-
-INSERT INTO `pedido_esta_bebida` (`pedido_id_pedido`, `bebida_id_bebida`) VALUES
-(1, 1),
-(2, 2),
-(3, 3);
+INSERT INTO `pedido` (`id_pedido`, `coste`, `cliente_id_cliente`, `casa_id_casa`, `tipo_pago`, `fecha`) VALUES
+(1, 15.5, 1, 1, 'efectivo', '2024-01-01'),
+(2, 12.25, 2, 2, 'tarjeta', '2024-01-01'),
+(3, 18.75, 3, 3, 'efectivo', '2024-01-01'),
+(4, 19.98, 3, 3, 'efectivo', '2024-01-01'),
+(5, 8.99, 3, 3, 'efectivo', '2024-01-01'),
+(6, 19.98, 3, 3, 'efectivo', '2024-01-01'),
+(7, 8.99, 3, 3, 'efectivo', '2024-05-23');
 
 -- --------------------------------------------------------
 
@@ -378,7 +318,13 @@ INSERT INTO `pedido_esta_hamburguesa` (`pedido_id_pedido`, `hamburguesa_id_hambu
 (1, 1),
 (1, 2),
 (2, 2),
-(3, 3);
+(3, 3),
+(4, 1),
+(4, 2),
+(5, 1),
+(6, 1),
+(6, 2),
+(7, 1);
 
 -- --------------------------------------------------------
 
@@ -402,12 +348,6 @@ ALTER TABLE `alergenos`
   ADD PRIMARY KEY (`id_alergeno`);
 
 --
--- Indices de la tabla `bebida`
---
-ALTER TABLE `bebida`
-  ADD PRIMARY KEY (`id_bebida`);
-
---
 -- Indices de la tabla `casa`
 --
 ALTER TABLE `casa`
@@ -418,14 +358,6 @@ ALTER TABLE `casa`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id_cliente`);
-
---
--- Indices de la tabla `cliente_pide_pedido`
---
-ALTER TABLE `cliente_pide_pedido`
-  ADD PRIMARY KEY (`cliente_id_cliente`,`pedido_id_pedido`),
-  ADD KEY `fk_cliente_has_pedido_pedido1_idx` (`pedido_id_pedido`),
-  ADD KEY `fk_cliente_has_pedido_cliente_idx` (`cliente_id_cliente`);
 
 --
 -- Indices de la tabla `cliente_tiene_casa`
@@ -484,14 +416,6 @@ ALTER TABLE `pedido`
   ADD KEY `fk_pedido_casa1_idx` (`casa_id_casa`);
 
 --
--- Indices de la tabla `pedido_esta_bebida`
---
-ALTER TABLE `pedido_esta_bebida`
-  ADD PRIMARY KEY (`pedido_id_pedido`,`bebida_id_bebida`),
-  ADD KEY `fk_pedido_has_bebida_bebida1_idx` (`bebida_id_bebida`),
-  ADD KEY `fk_pedido_has_bebida_pedido1_idx` (`pedido_id_pedido`);
-
---
 -- Indices de la tabla `pedido_esta_hamburguesa`
 --
 ALTER TABLE `pedido_esta_hamburguesa`
@@ -510,13 +434,6 @@ ALTER TABLE `pedido_has_cocineros`
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `cliente_pide_pedido`
---
-ALTER TABLE `cliente_pide_pedido`
-  ADD CONSTRAINT `fk_cliente_has_pedido_cliente` FOREIGN KEY (`cliente_id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_cliente_has_pedido_pedido1` FOREIGN KEY (`pedido_id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `cliente_tiene_casa`
@@ -556,13 +473,6 @@ ALTER TABLE `jefe`
 ALTER TABLE `pedido`
   ADD CONSTRAINT `fk_pedido_casa1` FOREIGN KEY (`casa_id_casa`) REFERENCES `casa` (`id_casa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_pedido_cliente1` FOREIGN KEY (`cliente_id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `pedido_esta_bebida`
---
-ALTER TABLE `pedido_esta_bebida`
-  ADD CONSTRAINT `fk_pedido_has_bebida_bebida1` FOREIGN KEY (`bebida_id_bebida`) REFERENCES `bebida` (`id_bebida`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_pedido_has_bebida_pedido1` FOREIGN KEY (`pedido_id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `pedido_esta_hamburguesa`
