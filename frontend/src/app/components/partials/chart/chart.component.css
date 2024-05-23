@@ -1,0 +1,9 @@
+.container__chart{
+    display: flex;
+}
+
+@media screen and (max-width: 1169px) {
+    .container__chart{
+        flex-direction: column;
+    }
+}

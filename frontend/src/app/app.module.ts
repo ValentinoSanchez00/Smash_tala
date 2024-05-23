@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { CheckoutComponent } from './components/pages/checkout/checkout.component';
+import { ChartComponent } from './components/partials/chart/chart.component';
 
 
 
@@ -37,6 +38,7 @@ import { CheckoutComponent } from './components/pages/checkout/checkout.componen
     CartPageComponent,
     NotFoundComponent,
     CheckoutComponent,
+    ChartComponent,
 
   
   ],
