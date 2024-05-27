@@ -24,6 +24,7 @@ import { OrderComponent } from './components/pages/order/order.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { PedidosComponent } from './components/pages/pedidos/pedidos.component';
 
 
 
@@ -44,6 +45,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     CheckoutComponent,
     ChartComponent,
     OrderComponent,
+    PedidosComponent,
 
   
   ],
