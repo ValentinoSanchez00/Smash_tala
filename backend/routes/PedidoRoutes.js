@@ -4,7 +4,21 @@ const db = require('../bd/db');
 
 // Obtener todos los pedidos
 router.get('/', (req, res) => {
-    db.query('SELECT * FROM pedido', (err, results) => {
+    const query = `
+        SELECT 
+            p.coste, 
+            p.entregado, 
+            p.fecha, 
+            p.id_pedido, 
+            p.tipo_pago, 
+            c.direccion AS casa_nombre, 
+            cl.nombre AS cliente_nombre
+        FROM pedido p
+        JOIN casa c ON p.casa_id_casa = c.id_casa
+        JOIN cliente cl ON p.cliente_id_cliente = cl.id_cliente
+    `;
+
+    db.query(query, (err, results) => {
         if (err) {
             console.error('Error al obtener los pedidos:', err);
             return res.status(500).json({ error: 'Error al obtener los pedidos' });
@@ -12,6 +26,8 @@ router.get('/', (req, res) => {
         res.json(results);
     });
 });
+
+
 
 // Obtener todos los pedidos de un cliente
 router.get('/cliente/:id', (req, res) => {
@@ -25,6 +41,21 @@ router.get('/cliente/:id', (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    console.log("llega")
+    db.query('UPDATE pedido SET entregado = 1 WHERE id_pedido = ?', [ id], (err, result) => {
+        if (err) {
+            console.error('Error al actualizar el pedido:', err);
+            return res.status(500).json({ error: 'Error al actualizar el pedido' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Pedido no encontrado' });
+        }
+        res.json({ message: 'Pedido actualizado exitosamente' });
+    });
+});
+
 // Insertar un nuevo pedido
 router.post('/', async (req, res) => {
     try {
@@ -33,9 +64,9 @@ router.post('/', async (req, res) => {
         const id_casa = await compareDireccion(req.body.direccion, req.body.id_cliente);
         const currentDate = new Date();
         const formattedDate = currentDate.toISOString().split('T')[0];
-        const sql = 'INSERT INTO pedido (id_pedido,coste, cliente_id_cliente, casa_id_casa,tipo_pago,fecha) VALUES (?, ?, ?,?,?,?)';
+        const sql = 'INSERT INTO pedido (id_pedido,coste, cliente_id_cliente, casa_id_casa,tipo_pago,fecha,entregado) VALUES (?, ?, ?,?,?,?,?)';
 
-        db.query(sql, [id_pedido, req.body.contenido.totalPrice, req.body.id_cliente, id_casa, req.body.tipo_pago, formattedDate], (err, result) => {
+        db.query(sql, [id_pedido, req.body.contenido.totalPrice, req.body.id_cliente, id_casa, req.body.tipo_pago, formattedDate,0], (err, result) => {
             if (err) {
                 console.error('Error al insertar el pedido:', err);
                 return res.status(500).json({ error: 'Error al insertar el pedido' });
@@ -58,6 +89,9 @@ router.post('/', async (req, res) => {
     }
 });
 
+
+
+
 function MaxIdPedido() {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT MAX(id_pedido) AS id FROM pedido';
@@ -76,6 +110,9 @@ function MaxIdPedido() {
         });
     });
 }
+
+
+
 
 function MaxIdCasa() {
     return new Promise((resolve, reject) => {

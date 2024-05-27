@@ -21,4 +21,9 @@ private apiUrl = 'http://localhost:3000/pedido'
     return this.http.get<any>(`${this.apiUrl}/cliente/${id_cliente}`);
   }
 
+  // Actualizar el estado de entrega de un pedido
+  entregarPedido(id_pedido: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id_pedido}`, {});
+  }
+
 }

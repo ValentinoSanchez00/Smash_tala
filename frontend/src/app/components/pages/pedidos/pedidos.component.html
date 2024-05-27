@@ -1,2 +1,17 @@
 <app-header></app-header>
-<p>pedidos works!</p>
+<div class="pedidos__title">
+    <h1>Listado de pedidos en proceso</h1>
+</div>
+
+<div class="container__pedidos">
+   <div class="w-50 pedido" *ngFor="let pedido of pedidosFilter; let i = index">
+  <p>Dirección de entrega: {{pedido.casa_nombre}}</p>
+  <p>Nombre cliente: {{pedido.cliente_nombre}}</p>
+  <p>Fecha: {{pedido.fecha}}</p>
+  <button class="btn btn__entregado" [id]="'pedido-' + i" (click)="entregado(pedido, i)">Entregado</button>
+</div>
+<div class="w-100" *ngIf="pedidosFilter.length === 0">
+<p>En estos momentos no hay pedidos</p>
+</div>
+
+</div>
