@@ -1,51 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
-import { LocalstorageService } from 'src/app/services/localstorage.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+  ver: boolean = false;
   load: any;
   datos: any;
-  loadItems:any;
-  countCart:number = 0;
+  loadItems: any;
+  countCart: number = 0;
 
-  constructor( private local: LocalstorageService, private cart:CartService) {  
-    this.load= sessionStorage.getItem('isLoad');
-    let datosSesion= sessionStorage.getItem('user');
-    this.datos= JSON.parse(datosSesion || '{}');
+  constructor(private cart: CartService, private router: Router) {
+    this.load = sessionStorage.getItem('isLoad');
+    this.ver = this.load === 'true';
+    console.log(this.ver);
+
+    let datosSesion = sessionStorage.getItem('user') || '{}';
+    this.datos = JSON.parse(datosSesion);
+    console.log(this.datos);
   }
 
   ngOnInit(): void {
     this.getCartItems();
-    }
+  }
 
   logout() {
-    sessionStorage.clear();
-  
-    window.location.reload();
+    sessionStorage.setItem('isLoad', 'false');
+    sessionStorage.setItem('user', '{}');
+    this.ver = false;
+    this.router.navigate(['/login']);
   }
-
-  reloadPage() {
-    if (sessionStorage.getItem('isLoad') !== 'false') {
-      sessionStorage.setItem('isLoad', 'false');
-      window.location.reload();
-    }
-  }
-
-
 
   getCartItems() {
-   this.cart.getCartObservable().subscribe((cart) => {
+    this.cart.getCartObservable().subscribe((cart) => {
       this.loadItems = cart;
       this.countCart = this.loadItems.totalCount;
-     
-      
     });
-
   }
 }

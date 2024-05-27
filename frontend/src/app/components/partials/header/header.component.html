@@ -6,22 +6,20 @@
     <nav>
         <ul>
             <li><a routerLink="/">Home</a></li>
-            <li *ngIf="!load"><a routerLink="/login">Login</a></li>
-            <li [ngStyle]="{ 'display': load ? 'block' : 'none' }"  class="menu-container nav__link"><a >{{datos.nombre}}</a> 
-            <div class="menu">
-                <a routerLink="/perfil">Profile</a>
-                <a routerLink="/orders">Orders</a>
-                <a  class="nav__link" (click)="logout()">Logout</a>
-
-            </div>
-         </li> 
-        <li [ngStyle]="{ 'display': load ? 'block' : 'none' }">
-            <a routerLink="/cart">
-              Cart <span *ngIf="countCart>0">{{countCart}}</span> 
-            </a>
-        </li>
-
-
+            <li *ngIf="ver" class="menu-container nav__link"><a>Hola {{datos.nombre}}</a>
+                <div class="menu">
+                    <a routerLink="/perfil">Profile</a>
+                    <a routerLink="/orders">Orders</a>
+                    <a *ngIf="datos.rol === 1" routerLink="/pedidos">Pedidos</a>
+                    <a class="nav__link" (click)="logout()">Logout</a>
+                </div>
+            </li>
+            <li>
+                <a *ngIf="ver" routerLink="/cart">
+                    Cart <span *ngIf="countCart > 0">{{ countCart }}</span>
+                </a>
+            </li>
+            <li *ngIf="!ver"><a routerLink="/login">Login</a></li>
         </ul>
     </nav>
 </header>
