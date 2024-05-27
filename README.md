@@ -97,7 +97,7 @@ ChatGPT
 
 ## 1. Descripción del Proyecto
 
-Smash Tala es un proyecto de [descripción del proyecto aquí].
+Smash Tala es un proyecto de TFG que simula un fast food de hamburguesas pero en vez de llamar y gesionar los pedidos de manera separada , se hace todo desde la misma web..
 
 ## 2. Tecnologías Utilizadas
 
