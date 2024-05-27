@@ -4,14 +4,15 @@
 </div>
 
 <div class="container__pedidos">
-   <div class="w-50 pedido" *ngFor="let pedido of pedidosFilter; let i = index">
+   <div class="w-50 pedido" *ngFor="let pedido of pedidosFilter; let i = index" [id]="'pedido-' + i">
   <p>Dirección de entrega: {{pedido.casa_nombre}}</p>
   <p>Nombre cliente: {{pedido.cliente_nombre}}</p>
   <p>Fecha: {{pedido.fecha}}</p>
-  <button class="btn btn__entregado" [id]="'pedido-' + i" (click)="entregado(pedido, i)">Entregado</button>
+  <button class="btn btn__entregado" (click)="entregado(pedido, i)">Entregado</button>
 </div>
 <div class="w-100" *ngIf="pedidosFilter.length === 0">
 <p>En estos momentos no hay pedidos</p>
 </div>
+
 
 </div>
