@@ -71,49 +71,67 @@ export class ChartComponent implements OnInit {
 
     const ctx2 = document.getElementById('myChart2') as HTMLCanvasElement;
 
-    if (ctx2) {
+if (ctx2) {
+  const burgerCountsByMonth: { [key: string]: number } = {};
 
-      const burgerCountsByDate: { [key: string]: number } = {};
 
-      this.pedidos.forEach((order:any) => {
-          const date = order.fecha;
-          const burgers = order.hamburguesa.split(',');
-          if (!burgerCountsByDate[date]) {
-              burgerCountsByDate[date] = 0;
-          }
-          burgerCountsByDate[date] += burgers.length;
-      });
+  const dates = this.pedidos.map((order: any) => new Date(order.fecha));
 
-      const labels = Object.keys(burgerCountsByDate);
-      const values = Object.values(burgerCountsByDate);
 
-      const burgersChart = new Chart(ctx2, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Cantidad de Hamburguesas Comidas',
-                data: values,
-                backgroundColor: 'transparent',
-                borderColor: '#ae1721',
-                borderWidth: 1,
-                fill: true
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return Number.isInteger(value) ? value : null;
-                        }
-                    }
-                }
+  const firstDate = new Date(Math.min(...dates));
+  const lastDate = new Date(Math.max(...dates));
+
+  const currentDate = new Date(firstDate);
+  while (currentDate <= lastDate) {
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+    const monthYear = `${year}-${month < 10 ? '0' + month : month}`;
+    burgerCountsByMonth[monthYear] = 0;
+    currentDate.setMonth(currentDate.getMonth() + 1);
+  }
+
+
+  this.pedidos.forEach((order: any) => {
+    const date = new Date(order.fecha);
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const monthYear = `${year}-${month < 10 ? '0' + month : month}`;
+
+    const burgers = order.hamburguesa.split(',');
+    burgerCountsByMonth[monthYear] += burgers.length;
+  });
+
+  const labels = Object.keys(burgerCountsByMonth).sort(); 
+  const values = Object.values(burgerCountsByMonth);
+
+  const burgersChart = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Cantidad de Hamburguesas Comidas',
+        data: values,
+        backgroundColor: 'transparent',
+        borderColor: '#ae1721',
+        borderWidth: 1,
+        fill: true
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return Number.isInteger(value) ? value : null;
             }
+          }
         }
-    });
+      }
     }
+  });
+}
+
 
   }
   
