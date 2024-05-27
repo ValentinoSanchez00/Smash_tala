@@ -1,0 +1,42 @@
+.pedidos__title {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 10px; 
+    border-bottom: 1px solid #e0e0e0; 
+    padding: 10px;
+  }
+  .container__pedidos{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 1rem;
+  }
+  .pedido{
+    border: 1px solid rgb(174, 23, 33);
+    padding-block: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    width: 5rem;
+    font-size: large;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .btn__entregado{
+    color:rgb(174, 23, 33) ;
+    padding: 0.5rem;
+    background-color: white;
+    border: 1px solid black;
+  }
+  .btn__entregado:hover{
+    background-color: rgb(205, 205, 205);
+    border: 1px solid rgb(34, 34, 34);
+  }
+  .hidden {
+    display: none;
+  }
+  
