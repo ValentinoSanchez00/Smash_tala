@@ -20,6 +20,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { CheckoutComponent } from './components/pages/checkout/checkout.component';
 import { ChartComponent } from './components/partials/chart/chart.component';
+import { OrderComponent } from './components/pages/order/order.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -39,6 +43,7 @@ import { ChartComponent } from './components/partials/chart/chart.component';
     NotFoundComponent,
     CheckoutComponent,
     ChartComponent,
+    OrderComponent,
 
   
   ],
@@ -51,7 +56,10 @@ import { ChartComponent } from './components/partials/chart/chart.component';
     FormsModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
   
   ],
   providers: [],

@@ -7,6 +7,8 @@ import { RegisterComponent } from './components/pages/register/register.componen
 import { ProfileComponent } from './components/pages/profile/profile.component';
 import { CartPageComponent } from './components/pages/cart/cart.component';
 import { CheckoutComponent } from './components/pages/checkout/checkout.component';
+import { OrderComponent } from './components/pages/order/order.component';
+
 
 
 const routes: Routes = [
@@ -17,6 +19,7 @@ const routes: Routes = [
   {path:'register',component:RegisterComponent},
   {path:'perfil',component:ProfileComponent},
   {path:'cart',component:CartPageComponent},
+  {path:'orders',component:OrderComponent},
   {path:'checkout', component: CheckoutComponent},
   {path:'',redirectTo:'home',pathMatch:'full'}
 ];

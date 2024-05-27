@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FoodService } from 'src/app/services/food.service';
 import { Subscription } from 'rxjs';
+import { LocalstorageService } from 'src/app/services/localstorage.service';
 
 
 @Component({
@@ -13,9 +14,13 @@ export class HomeComponent implements OnInit {
   foods: any[] = [];
   foodSubscription: Subscription | undefined;
 
+  load: boolean = false;
+  datos: any = {};
+
   constructor(
     private foodService: FoodService,
     activatedRoute: ActivatedRoute,
+    private localStorageService: LocalstorageService,
   ) {
     activatedRoute.params.subscribe((params) => {
       if (params.searchTerm) {
@@ -36,6 +41,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const isLoad = sessionStorage.getItem('isLoad');
+    if (isLoad !== null) {
+      this.load = isLoad === 'true';
+    }
+    else{
+      this.load = false;
+    }
+    console.log(this.load);
   }
 
   ngOnDestroy(): void {
