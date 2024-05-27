@@ -73,9 +73,8 @@ Abre tu navegador y navega a http://localhost:4200 para ver la aplicación en ac
 Si tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto:
 
 Autor: Valentino Sánchez
-Email: [tu-email@dominio.com]
-markdown
-Copiar código
+Email: valentinosanchezraverta@gmail.com
+
 
 ### Cómo Utilizar Este README.md
 
@@ -93,8 +92,7 @@ ponmelo todo en el mismo readmi para copiar y pegar
 ChatGPT
 ¡Por supuesto! Aquí tienes todo el contenido del manual en un solo bloque, listo para copiar y pegar en tu archivo README.md:
 
-markdown
-Copiar código
+
 # Smash Tala
 
 ## 1. Descripción del Proyecto
