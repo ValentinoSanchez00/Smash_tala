@@ -17,7 +17,7 @@ import { NotFoundComponent } from './components/partials/not-found/not-found.com
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { CheckoutComponent } from './components/pages/checkout/checkout.component';
 import { ChartComponent } from './components/partials/chart/chart.component';
 import { OrderComponent } from './components/pages/order/order.component';
@@ -27,6 +27,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PedidosComponent } from './components/pages/pedidos/pedidos.component';
 import { SuccessModalComponent } from './components/partials/success-modal/success-modal.component';
 import { LogComponent } from './components/pages/log/log.component';
+import { AboutUsComponent } from './components/pages/about-us/about-us.component';
+import { FooterComponent } from './components/partials/footer/footer.component';
+
 
 
 
@@ -50,6 +53,8 @@ import { LogComponent } from './components/pages/log/log.component';
     PedidosComponent,
     SuccessModalComponent,
     LogComponent,
+    AboutUsComponent,
+    FooterComponent,
 
   
   ],
@@ -66,6 +71,7 @@ import { LogComponent } from './components/pages/log/log.component';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    
   
   ],
   providers: [],

@@ -9,8 +9,8 @@
   <label for="end-date">Hasta:</label>
   <input type="date" id="end-date" [(ngModel)]="endDate" [min]="minDate" [max]="maxDate">
   <button class="btn btn-filter" (click)="applyFilter()">Aplicar Filtro</button>
-  <button class="btn btn-show-all" (click)="getAllLogs()">Mostrar Todos</button>
-  <button class="btn btn-show-month" (click)="getLogsMes()">Mostrar Logs del Mes</button>
+  <button class="btn btn-show-all" (click)="toggleLogs()">Mostrar Todos</button>
+  <button class="btn btn-show-month" (click)="toggleLogs()">Mostrar Logs del Mes</button>
 </div>
 
 <table class="log-table">

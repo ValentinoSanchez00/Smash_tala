@@ -1,0 +1,27 @@
+.about-us__container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .about-us__container h1, .about-us__container h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .about-us__container p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .map-container {
+    margin-top: 30px;
+  }
+  
+  iframe {
+    width: 100%;
+    border: none;
+  }
+  

@@ -1,23 +1,42 @@
 import { LogService } from './../../../services/log.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-log',
   templateUrl: './log.component.html',
   styleUrls: ['./log.component.css']
 })
-export class LogComponent implements OnInit {
+export class LogComponent implements OnInit, OnDestroy {
   logs: any[] = [];
   filteredLogs: any[] = [];
   startDate: string = '';
   endDate: string = '';
   minDate: string = '';
   maxDate: string = '';
+  intervalId: any;
+  showingAllLogs: boolean = false;
 
   constructor(private logService: LogService) { }
 
   ngOnInit(): void {
     this.getLogsMes();
+    this.startInterval(this.getLogsMes.bind(this), 5000);
+  }
+
+  ngOnDestroy(): void {
+    this.clearInterval();
+  }
+
+  startInterval(callback: Function, interval: number) {
+    this.clearInterval();
+    this.intervalId = setInterval(callback, interval);
+  }
+
+  clearInterval() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
   }
 
   async getLogsMes() {
@@ -26,7 +45,7 @@ export class LogComponent implements OnInit {
     this.formatDates(this.logs);
     this.filteredLogs = [...this.logs];
     this.setMonthLimits();
-   
+    this.showingAllLogs = false;
   }
 
   async getAllLogs() {
@@ -35,7 +54,17 @@ export class LogComponent implements OnInit {
     this.formatDates(this.logs);
     this.filteredLogs = [...this.logs];
     this.clearDateLimits();
- 
+    this.showingAllLogs = true;
+  }
+
+  toggleLogs() {
+    if (this.showingAllLogs) {
+      this.getLogsMes();
+      this.startInterval(this.getLogsMes.bind(this), 5000);
+    } else {
+      this.getAllLogs();
+      this.startInterval(this.getAllLogs.bind(this), 5000);
+    }
   }
 
   formatDates(logs: any[]) {
