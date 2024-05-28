@@ -24,7 +24,7 @@ router.get('/comprobar', (req, res) => {
     if (err) {
       res.status(500).json({ error: 'Error al obtener los clientes: '+err });
     } else {
-      console.log(result);
+    
       res.json(result);
     }
   });
@@ -39,7 +39,7 @@ router.get('/casa/:id', (req, res) => {
     if (err) {
       res.status(500).json({ error: 'Error al obtener los clientes: '+err });
     } else {
-      console.log(result);
+    
       res.json(result);
     }
   });
@@ -54,17 +54,16 @@ router.post('/', (req, res) => {
 
   MaxId()
     .then((id) => {
-      console.log("El ID máximo encontrado es:", id);
+   
       idUser = id+1;
 
       const sql = 'INSERT INTO cliente (id_cliente,nombre, apellido, email, password) VALUES (?, ?, ?, ?, ?)';
 
       db.query(sql, [idUser, nombre, apellido, email, password], (err, result) => {
         if (err) {
-          console.log(err);
-          res.status(500).json({ error: 'Error al agregar el cliente' });
+              res.status(500).json({ error: 'Error al agregar el cliente' });
         } else {
-          console.log(result);
+        
           res.status(201).json({ message: 'Cliente agregado correctamente' });
         }
       });
@@ -113,10 +112,10 @@ async function MaxId() {
       } else {
         if (result.length > 0) {
           const id = result[0].id;
-          console.log("Se devuelve la id:", id);
+       
           resolve(id);
         } else {
-          console.log("No se encontraron resultados.");
+      
           resolve(null);
         }
       }
