@@ -81,8 +81,18 @@ router.put('/:id', (req, res) => {
                     console.error('Error al insertar en log:', err);
                     return res.status(500).json({ error: 'Error al insertar en log' });
                 }
-                res.json({ message: 'Pedido actualizado y log insertado exitosamente' });
+                
             });
+
+            const insertQuery2='INSERT INTO jefe_ve_log(jefe_id,category_id) VALUES(1,?)';
+            db.query(insertQuery2, [newIdLog], (err) => {
+                if (err) {
+                    console.error('Error al insertar en log:', err);
+                    return res.status(500).json({ error: 'Error al insertar en log' });
+                }
+                 res.json({ message: 'Pedido actualizado y log insertado exitosamente' });
+            });
+           
         });
     });
 });
@@ -118,7 +128,33 @@ router.post('/', async (req, res) => {
 
             Promise.all(promises)
                 .then(() => {
-                    res.status(201).json({ message: 'Pedido insertado correctamente' });
+                    db.query('SELECT MAX(category_id) AS maxId FROM log', (err, result) => {
+                        if (err) {
+                            console.error('Error al obtener el max id_log:', err);
+                            return res.status(500).json({ error: 'Error al obtener el max id_log' });
+                        }
+
+                        const newIdLog = result[0].maxId + 1;
+                        const content = `El pedido con id ${id_pedido} ha sido creado`;
+                        
+                        const insertQuery = 'INSERT INTO log (category_id, id_log, fecha, contenido) VALUES (?, ?, ?, ?)';
+                        db.query(insertQuery, [newIdLog, 1, formattedDate, content], (err) => {
+                            if (err) {
+                                console.error('Error al insertar en log:', err);
+                                return res.status(500).json({ error: 'Error al insertar en log' });
+                            }
+                            
+                        });
+
+                        const insertQuery2 = 'INSERT INTO jefe_ve_log (jefe_id, category_id) VALUES (1, ?)';
+                        db.query(insertQuery2, [newIdLog], (err) => {
+                            if (err) {
+                                console.error('Error al insertar en log:', err);
+                                return res.status(500).json({ error: 'Error al insertar en log' });
+                            }
+                            res.status(201).json({ message: 'Pedido y log insertados correctamente' });
+                        });
+                    });
                 })
                 .catch(error => {
                     console.error('Error al insertar los elementos del pedido:', error);
