@@ -33,7 +33,7 @@ this.FoodService.getAlergenos(params.id).subscribe((data: any) => {
   
  this.isLogin= sessionStorage.getItem('isLoad');
 console.log(this.isLogin)
-  if(this.isLogin==null){
+  if(this.isLogin==null|| this.isLogin=='false'){
     this.isLogin=false;
   }
   else{

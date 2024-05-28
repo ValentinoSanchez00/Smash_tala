@@ -17,9 +17,9 @@ export class PedidosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getPedidos();
-    /* this.intervalId = setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.getPedidos();
-    }, 5000); */
+    }, 5000);
     //Si va a la nube la bd se activa
   }
 

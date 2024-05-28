@@ -3,6 +3,9 @@ import { CartService } from 'src/app/services/cart.service';
 import { ClientesService } from './../../../services/clientes.service';
 import { CartModule } from 'src/app/shared/models/cart.module';
 import { PedidoService } from 'src/app/services/pedido.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-checkout',
@@ -20,7 +23,7 @@ export class CheckoutComponent {
 
   metodoPago: string = '';
   direccionEnvio: any = '';
-  constructor(private cartService: CartService, private clientesService: ClientesService, private pedidoService: PedidoService) {
+  constructor(private cartService: CartService, private clientesService: ClientesService, private pedidoService: PedidoService, private router: Router) {
     this.cartService.getCartObservable().subscribe((cart) => {
       this.cart = cart;
     });
@@ -44,21 +47,30 @@ export class CheckoutComponent {
 }
 
 
-  placeOrder() {
-    let pedido = {
-      id_cliente:this.id_cliente,
-      direccion: this.direccionEnvio,
-      tipo_pago: this.metodoPago,
-      contenido: this.cart,
-    }
-    this.pedidoService.crearPedido(pedido).subscribe((data) => {
-      console.log(data);
-      if (data) {
-        this.cartService.clearCart();
-        alert('Pedido realizado con éxito');
-      }
-    })
-
-    
+placeOrder() {
+  let pedido = {
+    id_cliente: this.id_cliente,
+    direccion: this.direccionEnvio,
+    tipo_pago: this.metodoPago,
+    contenido: this.cart,
   }
+  this.pedidoService.crearPedido(pedido).subscribe((data) => {
+    console.log(data);
+    if (data) {
+      this.cartService.clearCart();
+      Swal.fire({
+        title: 'Pedido realizado con éxito',
+        text: 'El pedido se entregará en el tiempo estimado. Haz clic en el botón para volver a la página de inicio',
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonText: 'Ir a Home'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/home']);
+        }
+      });
+    }
+  });
+}
+
 }

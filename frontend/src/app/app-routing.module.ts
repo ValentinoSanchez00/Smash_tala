@@ -9,6 +9,7 @@ import { CartPageComponent } from './components/pages/cart/cart.component';
 import { CheckoutComponent } from './components/pages/checkout/checkout.component';
 import { OrderComponent } from './components/pages/order/order.component';
 import { PedidosComponent } from './components/pages/pedidos/pedidos.component';
+import { LogComponent } from './components/pages/log/log.component';
 
 
 
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path:'orders',component:OrderComponent},
   {path:'checkout', component: CheckoutComponent},
   {path:'pedidos', component: PedidosComponent},
+  {path:'log', component: LogComponent},
   {path:'',redirectTo:'home',pathMatch:'full'}
 ];
 

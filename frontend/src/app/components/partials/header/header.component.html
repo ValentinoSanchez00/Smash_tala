@@ -11,6 +11,7 @@
                     <a routerLink="/perfil">Profile</a>
                     <a routerLink="/orders">Orders</a>
                     <a *ngIf="datos.rol === 1" routerLink="/pedidos">Pedidos</a>
+                    <a *ngIf="datos.rol === 2" routerLink="/log">Historial</a>
                     <a class="nav__link" (click)="logout()">Logout</a>
                 </div>
             </li>

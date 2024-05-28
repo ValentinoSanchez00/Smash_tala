@@ -26,6 +26,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PedidosComponent } from './components/pages/pedidos/pedidos.component';
 import { SuccessModalComponent } from './components/partials/success-modal/success-modal.component';
+import { LogComponent } from './components/pages/log/log.component';
 
 
 
@@ -48,6 +49,7 @@ import { SuccessModalComponent } from './components/partials/success-modal/succe
     OrderComponent,
     PedidosComponent,
     SuccessModalComponent,
+    LogComponent,
 
   
   ],
