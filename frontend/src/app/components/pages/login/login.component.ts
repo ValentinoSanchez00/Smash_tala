@@ -9,6 +9,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  messageError:string='';
   constructor(private LoginService: LoginService,private router: Router) { }
 
   submitForm(): void {
@@ -26,7 +27,7 @@ export class LoginComponent {
           sessionStorage.setItem('user', JSON.stringify(data[0]));
           this.router.navigate(['/']);
         } else {
-
+          this.messageError="Usuario o contraseña incorrectos"
         }
       });
   }

@@ -22,6 +22,7 @@
     "@angular/router": "^16.0.0",
     "chart.js": "^4.4.3",
     "crypto-js": "^4.2.0",
+    "leaflet": "^1.9.4",
     "mailersend": "^2.2.0",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.11.0",
