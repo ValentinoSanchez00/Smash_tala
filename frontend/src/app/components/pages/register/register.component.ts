@@ -29,11 +29,9 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.isFormValid()) {
-      /* console.log('Formulario válido, enviando datos al servidor...'); */
       let response = this.loginService
         .crearUsuario(this.formData)
         .subscribe((data) => {
-          console.log(data);
           if (data.message === 'Cliente agregado correctamente') {
             this.router.navigate(['/login']);
           }

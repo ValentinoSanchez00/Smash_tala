@@ -15,7 +15,8 @@ export class CartService {
   addToCart(food: Hamburguer): void {
     let cartItem = this.cart.items.find((item) => item.food.id_hamburguesa === food.id_hamburguesa);
     if (cartItem) {
-      return;
+      this.changeCuantity(food.id_hamburguesa, cartItem.quantity + 1);
+
   
     } else {
       this.cart.items.push(new CartItemModule(food));

@@ -26,7 +26,7 @@ export class LogComponent implements OnInit {
     this.formatDates(this.logs);
     this.filteredLogs = [...this.logs];
     this.setMonthLimits();
-    console.log(this.logs);
+   
   }
 
   async getAllLogs() {
@@ -35,7 +35,7 @@ export class LogComponent implements OnInit {
     this.formatDates(this.logs);
     this.filteredLogs = [...this.logs];
     this.clearDateLimits();
-    console.log(this.logs);
+ 
   }
 
   formatDates(logs: any[]) {

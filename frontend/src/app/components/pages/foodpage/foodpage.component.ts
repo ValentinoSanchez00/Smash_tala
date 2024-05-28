@@ -27,12 +27,12 @@ this.FoodService.getAlergenos(params.id).subscribe((data: any) => {
     this.alergenos=this.alergenos.filter((alergeno:any)=>{
       return alergeno.alergeno!=null
     });
-    console.log(this.alergenos)
+  
   });
   
   
  this.isLogin= sessionStorage.getItem('isLoad');
-console.log(this.isLogin)
+
   if(this.isLogin==null|| this.isLogin=='false'){
     this.isLogin=false;
   }
@@ -53,12 +53,6 @@ console.log(this.isLogin)
   addToCart(){
     this.cartService.addToCart(this.food)
     this.router.navigateByUrl('/home')
-  }
-
-  addToFavorites(){
-    console.log(this.food)
-
-
   }
 
   abrirModal() {
