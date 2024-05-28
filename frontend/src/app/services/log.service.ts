@@ -10,4 +10,7 @@ export class LogService {
   getLogs() {
     return this.http.get<any>(this.apiUrl);
   }
+  getLogsMes(){
+    return this.http.get<any>(this.apiUrl+"/mes");
+  }
 }

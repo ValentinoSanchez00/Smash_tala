@@ -1,16 +1,13 @@
 .log__title {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 10px; 
-    border-bottom: 1px solid #e0e0e0; 
-    padding: 10px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
- 
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px;
+}
+
 .filter-container {
   display: flex;
   justify-content: center;
@@ -27,17 +24,38 @@
   padding: 5px;
 }
 
-.filter-container button {
+.filter-container .btn {
+  margin-right: 10px;
   padding: 6px 12px;
-  background-color: #007bff;
-  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  color: white;
+  font-size: 14px;
 }
 
-.filter-container button:hover {
+.filter-container .btn-filter {
+  background-color: #9C1519;
+}
+
+.filter-container .btn-filter:hover {
+  background-color: #E72929;
+}
+
+.filter-container .btn-show-all {
+  background-color: #007bff;
+}
+
+.filter-container .btn-show-all:hover {
   background-color: #0056b3;
+}
+
+.filter-container .btn-show-month {
+  background-color: #28a745;
+}
+
+.filter-container .btn-show-month:hover {
+  background-color: #218838;
 }
 
 .log-table {
