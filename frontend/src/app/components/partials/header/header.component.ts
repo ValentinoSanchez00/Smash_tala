@@ -17,11 +17,11 @@ export class HeaderComponent implements OnInit {
   constructor(private cart: CartService, private router: Router) {
     this.load = sessionStorage.getItem('isLoad');
     this.ver = this.load === 'true';
-    console.log(this.ver);
+
 
     let datosSesion = sessionStorage.getItem('user') || '{}';
     this.datos = JSON.parse(datosSesion);
-    console.log(this.datos);
+
   }
 
   ngOnInit(): void {

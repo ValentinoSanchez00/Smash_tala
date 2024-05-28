@@ -20,11 +20,10 @@ export class LoginComponent {
   login(email: string, password: string): void {
     this.LoginService.obtenerUsuario(email, password)
       .subscribe(data => {
-        console.log(data); 
+        
         if (data.length > 0) {
           sessionStorage.setItem('isLoad', 'true');
           sessionStorage.setItem('user', JSON.stringify(data[0]));
-          console.log("sesion storage cambiado");
           this.router.navigate(['/']);
         } else {
 

@@ -55,7 +55,7 @@ placeOrder() {
     contenido: this.cart,
   }
   this.pedidoService.crearPedido(pedido).subscribe((data) => {
-    console.log(data);
+    
     if (data) {
       this.cartService.clearCart();
       Swal.fire({

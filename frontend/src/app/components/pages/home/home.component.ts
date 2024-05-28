@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
         this.foodSubscription = this.foodService.getAll()
         .subscribe(foods => {
           this.foods = foods; 
-          console.log(this.foods)
+         
         });
       }
     });
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
     else{
       this.load = false;
     }
-    console.log(this.load);
+   
   }
 
   ngOnDestroy(): void {

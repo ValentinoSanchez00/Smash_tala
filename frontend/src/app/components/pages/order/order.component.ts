@@ -26,7 +26,6 @@ export class OrderComponent implements OnInit {
 
   constructor(private local: LocalstorageService, private PedidoService: PedidoService) {
     this.perfil = JSON.parse(sessionStorage.getItem('user') || '{}');
-    console.log(this.perfil);
     this.sort = new MatSort(); 
   }
   async ngOnInit(): Promise<void> {
@@ -54,7 +53,6 @@ export class OrderComponent implements OnInit {
   getAllBurgers(): string[] {
     let allBurgers: string[] = [];
     this.pedidos.forEach((order: any) => {
-      console.log(order);
       const burgers = order.hamburguesa.split(',');
       allBurgers = allBurgers.concat(burgers.map((burger :any)=> burger.trim()));
     });
@@ -64,7 +62,6 @@ export class OrderComponent implements OnInit {
    
    createBurgerChart() {
     const burgers = this.getAllBurgers();
-    console.log(burgers);
     const burgerCounts: { [key: string]: number } = {};
 
     // Contar las ocurrencias de cada tipo de hamburguesa

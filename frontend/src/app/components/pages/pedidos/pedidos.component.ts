@@ -37,7 +37,6 @@ export class PedidosComponent implements OnInit, OnDestroy {
         fecha: this.formatDate(pedido.fecha)
       }));
       this.pedidosFilter = this.allPedidos.filter((pedido: any) => pedido.entregado === 0);
-      console.log(this.pedidosFilter);
     } catch (error) {
       console.error('Error fetching pedidos:', error);
     }
@@ -54,8 +53,7 @@ export class PedidosComponent implements OnInit, OnDestroy {
   entregado(pedido: any, index: number): void {
     this.PedidoService.entregarPedido(pedido.id_pedido).subscribe(
       response => {
-        console.log(response);
-        console.log('Pedido entregado correctamente');
+
 
         // Ocultar el botón
         const button = document.getElementById(`pedido-${index}`);

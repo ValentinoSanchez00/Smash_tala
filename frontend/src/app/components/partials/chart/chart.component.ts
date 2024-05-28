@@ -27,14 +27,12 @@ export class ChartComponent implements OnInit {
         }
       );
     });
-    console.log(this.pedidos);
 
     this.createChart();
   }
 
 
   createChart(): void {
-    console.log(this.pedidos);
 
     if (!this.pedidos) {
       return; // Si this.pedidos no está definido, no hagas nada
