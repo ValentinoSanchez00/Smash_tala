@@ -5,10 +5,12 @@
 
 <div class="filter-container">
   <label for="start-date">Desde:</label>
-  <input type="date" id="start-date" [(ngModel)]="startDate">
+  <input type="date" id="start-date" [(ngModel)]="startDate" [min]="minDate" [max]="maxDate">
   <label for="end-date">Hasta:</label>
-  <input type="date" id="end-date" [(ngModel)]="endDate">
-  <button (click)="applyFilter()">Aplicar Filtro</button>
+  <input type="date" id="end-date" [(ngModel)]="endDate" [min]="minDate" [max]="maxDate">
+  <button class="btn btn-filter" (click)="applyFilter()">Aplicar Filtro</button>
+  <button class="btn btn-show-all" (click)="getAllLogs()">Mostrar Todos</button>
+  <button class="btn btn-show-month" (click)="getLogsMes()">Mostrar Logs del Mes</button>
 </div>
 
 <table class="log-table">
