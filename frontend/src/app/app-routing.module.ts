@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/pages/home/home.component';
 import { FoodpageComponent } from './components/pages/foodpage/foodpage.component';
 import { LoginComponent } from './components/pages/login/login.component';
@@ -27,9 +27,14 @@ const routes: Routes = [
   {path:'log', component: LogComponent},
   {path:'',redirectTo:'home',pathMatch:'full'}
 ];
+const routerOptions: ExtraOptions = {
+  scrollPositionRestoration: 'top',  
+  
+};
+
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,routerOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

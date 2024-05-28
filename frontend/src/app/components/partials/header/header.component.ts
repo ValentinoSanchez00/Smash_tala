@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
   datos: any;
   loadItems: any;
   countCart: number = 0;
+  menuOpen: boolean = false; 
 
   constructor(private cart: CartService, private router: Router) {
     this.load = sessionStorage.getItem('isLoad');
@@ -40,5 +41,8 @@ export class HeaderComponent implements OnInit {
       this.loadItems = cart;
       this.countCart = this.loadItems.totalCount;
     });
+  }
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 }
