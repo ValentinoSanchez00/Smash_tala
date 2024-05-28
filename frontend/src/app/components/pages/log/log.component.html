@@ -4,16 +4,26 @@
 </div>
 
 <div class="filter-container">
-  <label for="start-date">Desde:</label>
-  <input type="date" id="start-date" [(ngModel)]="startDate" [min]="minDate" [max]="maxDate">
-  <label for="end-date">Hasta:</label>
-  <input type="date" id="end-date" [(ngModel)]="endDate" [min]="minDate" [max]="maxDate">
-  <button class="btn btn-filter" (click)="applyFilter()">Aplicar Filtro</button>
-  <button class="btn btn-show-all" (click)="toggleLogs()">Mostrar Todos</button>
-  <button class="btn btn-show-month" (click)="toggleLogs()">Mostrar Logs del Mes</button>
+  <div class="filter-item">
+    <label for="start-date">Desde:</label>
+    <input type="date" id="start-date" [(ngModel)]="startDate" [min]="minDate" [max]="maxDate" class="form-control">
+  </div>
+  <div class="filter-item">
+    <label for="end-date">Hasta:</label>
+    <input type="date" id="end-date" [(ngModel)]="endDate" [min]="minDate" [max]="maxDate" class="form-control">
+  </div>
+  <div class="filter-item">
+    <button class="btn btn-filter" (click)="applyFilter()">Aplicar Filtro</button>
+  </div>
+  <div class="filter-item">
+    <button class="btn btn-show-all" (click)="toggleLogs()">Mostrar Todos</button>
+  </div>
+  <div class="filter-item">
+    <button class="btn btn-show-month" (click)="toggleLogs()">Mostrar Logs del Mes</button>
+  </div>
 </div>
 
-<table class="log-table">
+<table class="log-table table table-responsive mb-5">
   <thead>
     <tr>
       <th>Fecha</th>

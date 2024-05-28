@@ -10,9 +10,16 @@
 
 .filter-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
 }
 
 .filter-container label {
@@ -88,4 +95,18 @@
 
 .log-table td {
   color: #555;
+}
+
+@media (max-width: 767px) {
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-item {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .btn-block {
+    width: 100%;
+  }
 }

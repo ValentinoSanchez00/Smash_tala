@@ -32,6 +32,12 @@ export class LogComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(callback, interval);
   }
 
+  pauseInterval() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
   clearInterval() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -40,30 +46,32 @@ export class LogComponent implements OnInit, OnDestroy {
   }
 
   async getLogsMes() {
+    this.pauseInterval();
     const data = await this.logService.getLogsMes().toPromise();
     this.logs = data;
     this.formatDates(this.logs);
     this.filteredLogs = [...this.logs];
     this.setMonthLimits();
     this.showingAllLogs = false;
+    this.startInterval(this.getLogsMes.bind(this), 5000);
   }
 
   async getAllLogs() {
+    this.pauseInterval();
     const data = await this.logService.getLogs().toPromise();
     this.logs = data;
     this.formatDates(this.logs);
     this.filteredLogs = [...this.logs];
     this.clearDateLimits();
     this.showingAllLogs = true;
+    this.startInterval(this.getAllLogs.bind(this), 5000);
   }
 
   toggleLogs() {
     if (this.showingAllLogs) {
       this.getLogsMes();
-      this.startInterval(this.getLogsMes.bind(this), 5000);
     } else {
       this.getAllLogs();
-      this.startInterval(this.getAllLogs.bind(this), 5000);
     }
   }
 
@@ -78,6 +86,7 @@ export class LogComponent implements OnInit, OnDestroy {
   }
 
   applyFilter() {
+    this.pauseInterval();
     this.filteredLogs = this.logs.filter(log => {
       const logDate = new Date(log.fecha).getTime();
       const start = this.startDate ? new Date(this.startDate).getTime() : null;

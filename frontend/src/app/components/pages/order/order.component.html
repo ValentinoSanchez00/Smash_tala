@@ -1,41 +1,49 @@
 <app-header></app-header>
 <div class="order">
-    <div class="profile__info">
-      <h2 class="profile__title">Hola {{perfil.nombre}}</h2>
-    </div>
-  
-    <div>
-      <h2>Total de Pedidos: {{ gettotalPedidos() }}</h2>
-  
+  <div class="profile__info">
+    <h2 class="profile__title">Hola {{perfil.nombre}}</h2>
+  </div>
+
+  <div>
+    <h2>Total de Pedidos: {{ gettotalPedidos() }}</h2>
+
+    <div class="table-container">
       <table mat-table [dataSource]="dataSource" matSort>
-  
         <ng-container matColumnDef="fecha">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
           <td mat-cell *matCellDef="let element"> {{ element.fecha | date:'yyyy-MM-dd' }} </td>
         </ng-container>
-  
+
         <ng-container matColumnDef="coste">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Coste </th>
           <td mat-cell *matCellDef="let element"> {{ element.coste | currency }} </td>
         </ng-container>
-  
+
         <ng-container matColumnDef="tipo_pago">
           <th mat-header-cell *matHeaderCellDef> Tipo de Pago </th>
           <td mat-cell *matCellDef="let element"> {{ element.tipo_pago }} </td>
         </ng-container>
-  
+
         <ng-container matColumnDef="hamburguesa">
           <th mat-header-cell *matHeaderCellDef> Hamburguesa </th>
           <td mat-cell *matCellDef="let element"> {{ element.hamburguesa }} </td>
         </ng-container>
-  
+
+        <ng-container matColumnDef="entregado">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let element"> 
+            <mat-icon *ngIf="element.entregado" color="primary">check_circle</mat-icon>
+            <mat-icon *ngIf="!element.entregado" color="warn">cancel</mat-icon>
+          </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
-  
-    <div id="burgerChartContainer">
-      <canvas id="burgerChart"></canvas>
-    </div>
   </div>
-  
+
+  <div id="burgerChartContainer">
+    <canvas id="burgerChart"></canvas>
+  </div>
+</div>

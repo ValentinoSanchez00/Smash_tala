@@ -10,6 +10,7 @@ interface Order {
   tipo_pago: string;
   fecha: string;
   hamburguesa: string;
+  entregado: boolean;
 }
 
 @Component({
@@ -18,26 +19,27 @@ interface Order {
   styleUrls: ['./order.component.css']
 })
 export class OrderComponent implements OnInit {
-  pedidos: any;
+  pedidos: Order[] = [];
   perfil: any;
   dataSource: MatTableDataSource<Order> = new MatTableDataSource<Order>();
-  displayedColumns: string[] = ['fecha', 'coste', 'tipo_pago', 'hamburguesa'];
+  displayedColumns: string[] = ['fecha', 'coste', 'tipo_pago', 'hamburguesa', 'entregado'];
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private local: LocalstorageService, private PedidoService: PedidoService) {
     this.perfil = JSON.parse(sessionStorage.getItem('user') || '{}');
     this.sort = new MatSort(); 
   }
+
   async ngOnInit(): Promise<void> {
-    this.pedidos = await new Promise<any>((resolve) => {
+    this.pedidos = await new Promise<Order[]>((resolve) => {
       this.PedidoService.getPedidosByCliente(this.perfil.id_cliente).subscribe(
-        (data: any) => {
+        (data: Order[]) => {
+          console.log(data);
           resolve(data);
         }
       );
-      
     });
-   
+
     this.dataSource = new MatTableDataSource(this.pedidos);
     this.dataSource.sort = this.sort;
     this.createBurgerChart();
@@ -52,15 +54,14 @@ export class OrderComponent implements OnInit {
 
   getAllBurgers(): string[] {
     let allBurgers: string[] = [];
-    this.pedidos.forEach((order: any) => {
+    this.pedidos.forEach((order: Order) => {
       const burgers = order.hamburguesa.split(',');
-      allBurgers = allBurgers.concat(burgers.map((burger :any)=> burger.trim()));
+      allBurgers = allBurgers.concat(burgers.map((burger) => burger.trim()));
     });
     return allBurgers;
   }
 
-   
-   createBurgerChart() {
+  createBurgerChart() {
     const burgers = this.getAllBurgers();
     const burgerCounts: { [key: string]: number } = {};
 
@@ -81,7 +82,7 @@ export class OrderComponent implements OnInit {
 
     if (ctx) {
       new Chart(ctx, {
-        type: 'doughnut', 
+        type: 'doughnut',
         data: {
           labels: labels,
           datasets: [{
@@ -119,5 +120,3 @@ export class OrderComponent implements OnInit {
     }
   }
 }
-
-
