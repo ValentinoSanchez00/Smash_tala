@@ -5,6 +5,7 @@ const hamburguesaRoutes = require('./routes/HamburguesaRoutes');
 const alergenoRoutes = require('./routes/AlergenoRoutes');
 const ingredientesRoutes = require('./routes/IngredienteRoutes');
 const pedidoRoutes = require('./routes/PedidoRoutes');
+const logRoutes = require('./routes/LogRoutes');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/hamburguesa', hamburguesaRoutes);
 app.use('/alergenos', alergenoRoutes);
 app.use('/ingredientes', ingredientesRoutes);
 app.use('/pedido', pedidoRoutes);
+app.use('/log', logRoutes);
 
 
 const PORT = process.env.PORT || 3000;

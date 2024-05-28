@@ -1,0 +1,27 @@
+<app-header></app-header>
+<div class="log__title">
+  <h1>Listado del historial</h1>
+</div>
+
+<div class="filter-container">
+  <label for="start-date">Desde:</label>
+  <input type="date" id="start-date" [(ngModel)]="startDate">
+  <label for="end-date">Hasta:</label>
+  <input type="date" id="end-date" [(ngModel)]="endDate">
+  <button (click)="applyFilter()">Aplicar Filtro</button>
+</div>
+
+<table class="log-table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Contenido</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let log of filteredLogs">
+      <td>{{ log.fecha }}</td>
+      <td>{{ log.contenido }}</td>
+    </tr>
+  </tbody>
+</table>

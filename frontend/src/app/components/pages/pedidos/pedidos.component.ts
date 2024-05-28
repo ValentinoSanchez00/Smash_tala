@@ -1,5 +1,7 @@
 import { PedidoService } from './../../../services/pedido.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SuccessModalComponent } from '../../partials/success-modal/success-modal.component';
 
 @Component({
   selector: 'app-pedidos',
@@ -11,13 +13,13 @@ export class PedidosComponent implements OnInit, OnDestroy {
   allPedidos: any;
   pedidosFilter: any;
 
-  constructor(private PedidoService: PedidoService) {}
+  constructor(private PedidoService: PedidoService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getPedidos();
-    /* this.intervalId = setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.getPedidos();
-    }, 5000); */
+    }, 5000);
     //Si va a la nube la bd se activa
   }
 
@@ -48,18 +50,23 @@ export class PedidosComponent implements OnInit, OnDestroy {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+
   entregado(pedido: any, index: number): void {
     this.PedidoService.entregarPedido(pedido.id_pedido).subscribe(
       response => {
         console.log(response);
         console.log('Pedido entregado correctamente');
-        this.getPedidos(); // Refrescar la lista de pedidos después de la actualización
 
         // Ocultar el botón
         const button = document.getElementById(`pedido-${index}`);
         if (button) {
           button.classList.add('hidden');
         }
+
+        // Mostrar el modal con el mensaje del response
+        this.dialog.open(SuccessModalComponent, {
+          data: { message: response.message }
+        });
       },
       error => {
         console.error('Error al marcar el pedido como entregado:', error);
