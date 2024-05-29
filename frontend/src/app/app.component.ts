@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { LocalstorageService } from './services/localstorage.service';
+import { Component} from '@angular/core';
+
 
 
 
@@ -8,12 +8,10 @@ import { LocalstorageService } from './services/localstorage.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent  {
   datos: any;
 
-  constructor(private local: LocalstorageService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-   
-  }
+  
 }
