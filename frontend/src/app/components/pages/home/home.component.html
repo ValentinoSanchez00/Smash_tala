@@ -1,8 +1,6 @@
 <app-header></app-header>
 <app-search></app-search>
-<app-not-found [visible]="!foods || !foods.length"
-notFoundMessage="No hay resultados con esa búsqueda"
-></app-not-found>
+<app-not-found [visible]="!foods || !foods.length"notFoundMessage="No hay resultados con esa búsqueda"></app-not-found>
  <ul>
     <li *ngFor="let food of foods">
       <a class="food" routerLink="/food/{{food.id_hamburguesa}}">
