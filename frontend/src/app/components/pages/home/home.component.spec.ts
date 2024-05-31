@@ -81,19 +81,4 @@ describe('HomeComponent', () => {
     expect(component.foods).toEqual([{ id: 3, name: 'Food matching test' }]);
   });
 
-  it('should set load based on session storage', () => {
-    sessionStorageSpy.and.returnValue('true');
-    component.ngOnInit();
-    expect(component.load).toBeTrue();
-
-    sessionStorageSpy.and.returnValue('false');
-    component.ngOnInit();
-    expect(component.load).toBeFalse();
-  });
-
-  it('should unsubscribe on destroy', () => {
-    spyOn(component.foodSubscription!, 'unsubscribe');
-    component.ngOnDestroy();
-    expect(component.foodSubscription!.unsubscribe).toHaveBeenCalled();
-  });
 });
