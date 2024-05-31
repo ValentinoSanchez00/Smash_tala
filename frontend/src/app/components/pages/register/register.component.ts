@@ -18,6 +18,7 @@ export class RegisterComponent {
   confirmPassword = '';
 
   constructor(private loginService: LoginService, private router: Router) {}
+
   isFormValid(): boolean {
     return (
       this.formData.nombre !== '' &&
@@ -29,13 +30,11 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.isFormValid()) {
-      let response = this.loginService
-        .crearUsuario(this.formData)
-        .subscribe((data) => {
-          if (data.message === 'Cliente agregado correctamente') {
-            this.router.navigate(['/login']);
-          }
-        });
+      this.loginService.crearUsuario(this.formData).subscribe((data) => {
+        if (data.message === 'Cliente agregado correctamente') {
+          this.router.navigate(['/login']);
+        }
+      });
     } else {
       console.log(
         'Formulario inválido, por favor completa todos los campos y asegúrate de que las contraseñas coincidan.'
