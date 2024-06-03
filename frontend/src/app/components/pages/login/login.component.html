@@ -5,14 +5,14 @@
         <h1 class="h3 mb-3 fw-normal">Inicia Sesión</h1>
         <p class="text-danger">{{messageError}}</p>
         <div class="form-floating">
-            <input type="text" class="form-control" id="email" placeholder="name@example.com">
+            <input type="text" class="form-control" id="email" placeholder="name@example.com" [(ngModel)]="email">
             <label for="email">Email address</label>
         </div>
         <div class="form-floating mt-1 mb-3">
-            <input type="password" class="form-control" id="password" placeholder="Password">
+            <input type="password" class="form-control" id="password" placeholder="Password" [(ngModel)]="password">
             <label for="password">Password</label>
         </div>
-        <button class="w-100 btn btn-lg btn-danger" type="button" (click)="submitForm()">Sign in</button>
-        <p class="span_login">¿No tienes cuenta?<a routerLink="/register">Registrate</a></p>
+        <button class="w-100 btn btn-lg btn-danger" type="button" (click)="submitForm()" [disabled]="email.length < 1 || password.length < 1">Sign in</button>
+        <p class="span_login">¿No tienes cuenta? <a routerLink="/register">Regístrate</a></p>
     </div>
 </div>

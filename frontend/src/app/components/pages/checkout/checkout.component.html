@@ -36,7 +36,7 @@
                     <li *ngFor="let item of cart.items"> {{item.food.nombre}} x {{item.quantity}} = {{item.price}}€</li>
                 </ul>
                 <h2 class="mt-5">Total: {{cart.totalPrice}}€</h2>
-                <button [disabled]="cart.totalCount < 0 || !validate" class="btn button_order" (click)="placeOrder()">Realizar pedido</button>
+                <button [disabled]="cart.totalCount <= 0 || !validate" class="btn button_order" (click)="placeOrder()">Realizar pedido</button>
             </div>
 
         </div>

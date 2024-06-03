@@ -8,6 +8,7 @@
   <p>Dirección de entrega: {{pedido.casa_nombre}}</p>
   <p>Nombre cliente: {{pedido.cliente_nombre}}</p>
   <p>Fecha: {{pedido.fecha}}</p>
+  <p>{{pedido.hamburguesas}}</p>
   <button class="btn btn__entregado" (click)="entregado(pedido, i)">Entregado</button>
 </div>
 <div class="w-100" *ngIf="pedidosFilter.length === 0">

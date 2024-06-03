@@ -13,6 +13,7 @@
     align-items: center;
     flex-wrap: wrap;
     margin: 1rem;
+    margin-bottom: 20rem;
   }
   .pedido{
     border: 1px solid rgb(174, 23, 33);
@@ -38,5 +39,10 @@
   }
   .hidden {
     display: none;
+  }
+  @media screen and (max-width: 500px) {
+  p{
+    font-size: small
+  };
   }
   
