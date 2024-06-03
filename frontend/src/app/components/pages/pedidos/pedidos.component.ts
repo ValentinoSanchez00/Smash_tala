@@ -19,9 +19,9 @@ export class PedidosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.comprobar();
     this.getPedidos();
-    this.intervalId = setInterval(() => {
+   /*  this.intervalId = setInterval(() => {
       this.getPedidos();
-    }, 5000);
+    }, 5000); */
     //Si va a la nube la bd se activa
   }
 
@@ -54,6 +54,7 @@ export class PedidosComponent implements OnInit, OnDestroy {
         fecha: this.formatDate(pedido.fecha)
       }));
       this.pedidosFilter = this.allPedidos.filter((pedido: any) => pedido.entregado === 0);
+      console.log(this.pedidosFilter);
     } catch (error) {
       console.error('Error fetching pedidos:', error);
     }
