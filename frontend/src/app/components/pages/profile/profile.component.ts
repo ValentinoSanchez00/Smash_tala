@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { PedidoService } from './../../../services/pedido.service';
 import { Component, OnInit } from '@angular/core';
 import { LocalstorageService } from 'src/app/services/localstorage.service';
@@ -10,11 +11,20 @@ import { LocalstorageService } from 'src/app/services/localstorage.service';
 export class ProfileComponent implements OnInit {
   perfil: any;
 
-  constructor(private local: LocalstorageService, private PedidoService: PedidoService) {
+  constructor(private local: LocalstorageService, private PedidoService: PedidoService,private Router: Router) {
     this.perfil = JSON.parse(sessionStorage.getItem('user') || '{}');
+  }
+  comprobar(){
+    let isLoaded = sessionStorage.getItem('isLoad');
+    console.log(isLoaded);
+
+    if(isLoaded === null || isLoaded === 'false') {
+      this.Router.navigate(['/home']);
+    }
+
   }
 
   ngOnInit(): void {
-    // Lógica adicional si es necesaria en el futuro
+   this.comprobar();
   }
 }

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { LogService } from './../../../services/log.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -16,9 +17,10 @@ export class LogComponent implements OnInit, OnDestroy {
   intervalId: any;
   showingAllLogs: boolean = false;
 
-  constructor(private logService: LogService) { }
+  constructor(private logService: LogService, private Router: Router) { }
 
   ngOnInit(): void {
+    this.comprobar();
     this.getLogsMes();
     this.startInterval(this.getLogsMes.bind(this), 5000);
   }
@@ -27,6 +29,21 @@ export class LogComponent implements OnInit, OnDestroy {
     this.clearInterval();
   }
 
+  comprobar(){
+    let isLoaded = sessionStorage.getItem('isLoad');
+    console.log(isLoaded);
+
+    if(isLoaded === null || isLoaded === 'false') {
+      this.Router.navigate(['/home']);
+    }
+    else{
+      let user= JSON.parse(sessionStorage.getItem('user')! || '{}');
+      if(user.rol != 2){
+        this.Router.navigate(['/home']);
+      }
+    }
+
+  }
   startInterval(callback: Function, interval: number) {
     this.clearInterval();
     this.intervalId = setInterval(callback, interval);
