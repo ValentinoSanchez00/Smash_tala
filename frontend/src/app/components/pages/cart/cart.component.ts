@@ -1,5 +1,6 @@
+import { Router } from '@angular/router';
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { CartModule } from 'src/app/shared/models/cart.module';
 import { CartItemModule } from 'src/app/shared/models/cart-item.module';
@@ -9,14 +10,26 @@ import { CartItemModule } from 'src/app/shared/models/cart-item.module';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartPageComponent  {
+export class CartPageComponent implements OnInit {
   cart!: CartModule;
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private Router: Router) {
     this.cartService.getCartObservable().subscribe((cart) => {
       this.cart = cart;
     })
    }
 
+  ngOnInit(): void {
+    this.comprobar();
+  }
+   comprobar(){
+    let isLoaded = sessionStorage.getItem('isLoad');
+    console.log(isLoaded);
+
+    if(isLoaded === null || isLoaded === 'false') {
+      this.Router.navigate(['/home']);
+    }
+
+  }
 
 
   removeFromCart(cartItem:CartItemModule){

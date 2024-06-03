@@ -37,6 +37,18 @@ export class CheckoutComponent {
       this.direcciones = data;
     });
   }
+  ngOnInit(): void {
+    this.comprobar();
+  }
+   comprobar(){
+    let isLoaded = sessionStorage.getItem('isLoad');
+    console.log(isLoaded);
+
+    if(isLoaded === null || isLoaded === 'false') {
+      this.router.navigate(['/home']);
+    }
+
+  }
 
   checkInputs(): void {
     if (this.direccionEnvio.trim() !== ''&& this.metodoPago.trim() !== '') {
