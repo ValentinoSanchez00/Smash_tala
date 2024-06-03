@@ -16,6 +16,7 @@ export class RegisterComponent {
     rol: 0,
   };
   confirmPassword = '';
+  messageError = '';
 
   constructor(private loginService: LoginService, private router: Router) {}
 
@@ -28,17 +29,22 @@ export class RegisterComponent {
     );
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.isFormValid()) {
-      this.loginService.crearUsuario(this.formData).subscribe((data) => {
-        if (data.message === 'Cliente agregado correctamente') {
-          this.router.navigate(['/login']);
+      this.loginService.crearUsuario(this.formData).subscribe(
+        (data) => {
+          if (data.message === 'Cliente agregado correctamente') {
+            this.router.navigate(['/login']);
+          } else {
+            this.messageError = 'Hubo un problema al crear el usuario. Por favor, inténtalo de nuevo.';
+          }
+        },
+        (error) => {
+          this.messageError = "Ha ocurrido un error, pruebe de nuevo o intentelo más tarde";
         }
-      });
-    } else {
-      console.log(
-        'Formulario inválido, por favor completa todos los campos y asegúrate de que las contraseñas coincidan.'
       );
+    } else {
+      this.messageError = 'Formulario inválido, por favor completa todos los campos y asegúrate de que las contraseñas coincidan.';
     }
   }
 }

@@ -1,0 +1,72 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+from selenium.common.exceptions import NoAlertPresentException
+import random
+import string
+
+# Ruta al ChromeDriver
+chrome_driver_path = '/path/to/chromedriver'  # Reemplaza con la ruta a tu ChromeDriver
+
+# Función para generar un código promocional aleatorio
+def generate_promo_code(length):
+    characters = string.ascii_uppercase + '12345678910'
+    return ''.join(random.choice(characters) for _ in range(length))
+
+# Inicia el navegador
+driver = webdriver.Chrome(executable_path=chrome_driver_path)
+
+try:
+    # Navega a la página web
+    driver.get('https://www.bclever.ai/eventos/toledo/cupula-fest')  # Reemplaza con la URL de la página web
+
+    # Espera a que la página cargue completamente
+    time.sleep(5)  # Ajusta el tiempo de espera según sea necesario
+
+    length = 6  # Longitud inicial del código promocional
+    max_attempts = 100  # Número máximo de intentos
+
+    for attempt in range(max_attempts):
+        promo_code = generate_promo_code(length)
+        try:
+            # Encuentra el input del código promocional (ajusta el selector según la estructura de la página)
+            promo_input = driver.find_element(By.XPATH, '//input[@placeholder="Código promocional"]')
+
+            # Limpia el input antes de ingresar un nuevo código
+            promo_input.clear()
+
+            # Ingresa un código promocional
+            promo_input.send_keys(promo_code)
+
+            # Encuentra y hace clic en el botón de validar
+            submit_button = driver.find_element(By.XPATH, '//button[text()="Validar"]')
+            submit_button.click()
+
+            # Espera a que aparezca el mensaje de alerta
+            time.sleep(2)  # Ajusta el tiempo según sea necesario
+
+            try:
+                # Cambia el foco al alerta
+                alert = driver.switch_to.alert
+                # Obtiene el texto del alerta
+                alert_text = alert.text
+                # Acepta el alerta
+                alert.accept()
+                print(f"Código: {promo_code} - Resultado: {alert_text}")
+
+                # Si se encuentra un código válido, puedes decidir salir del bucle
+                if "válido" in alert_text.lower():  # Ajusta esto según el texto exacto del mensaje de éxito
+                    print(f"Código válido encontrado: {promo_code}")
+                    break
+            except NoAlertPresentException:
+                print(f"Código: {promo_code} - No se mostró alerta")
+        except Exception as e:
+            print(f"Error al probar el código {promo_code}: {e}")
+
+        # Incrementa la longitud del código después de un cierto número de intentos fallidos
+        if attempt % 10 == 0 and attempt > 0:
+            length += 1
+
+finally:
+    # Cierra el navegador
+    driver.quit()

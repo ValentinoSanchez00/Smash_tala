@@ -25,7 +25,7 @@ const routes: Routes = [
   {path:'checkout', component: CheckoutComponent},
   {path:'pedidos', component: PedidosComponent},
   {path:'log', component: LogComponent},
-  {path:'',redirectTo:'home',pathMatch:'full'}
+  {path:'**',redirectTo:'home',pathMatch:'full'}
 ];
 const routerOptions: ExtraOptions = {
   scrollPositionRestoration: 'top',  

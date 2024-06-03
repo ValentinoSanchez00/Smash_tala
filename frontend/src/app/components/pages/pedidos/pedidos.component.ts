@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { PedidoService } from './../../../services/pedido.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,9 +14,10 @@ export class PedidosComponent implements OnInit, OnDestroy {
   allPedidos: any;
   pedidosFilter: any;
 
-  constructor(private PedidoService: PedidoService, public dialog: MatDialog) {}
+  constructor(private PedidoService: PedidoService, public dialog: MatDialog, private Router: Router) {}
 
   ngOnInit(): void {
+    this.comprobar();
     this.getPedidos();
     this.intervalId = setInterval(() => {
       this.getPedidos();
@@ -27,6 +29,21 @@ export class PedidosComponent implements OnInit, OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+  }
+  comprobar(){
+    let isLoaded = sessionStorage.getItem('isLoad');
+    console.log(isLoaded);
+
+    if(isLoaded === null || isLoaded === 'false') {
+      this.Router.navigate(['/home']);
+    }
+    else{
+      let user= JSON.parse(sessionStorage.getItem('user')! || '{}');
+      if(user.rol != 1){
+        this.Router.navigate(['/home']);
+      }
+    }
+
   }
 
   async getPedidos(): Promise<void> {

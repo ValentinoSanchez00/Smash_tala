@@ -20,16 +20,20 @@ export class LoginComponent {
   }
   login(email: string, password: string): void {
     this.LoginService.obtenerUsuario(email, password)
-      .subscribe(data => {
-        
-        if (data.length > 0) {
-          sessionStorage.setItem('isLoad', 'true');
-          sessionStorage.setItem('user', JSON.stringify(data[0]));
-          this.router.navigate(['/']);
-        } else {
-          this.messageError="Usuario o contraseña incorrectos"
+      .subscribe(
+        data => {
+          if (data.length > 0) {
+            sessionStorage.setItem('isLoad', 'true');
+            sessionStorage.setItem('user', JSON.stringify(data[0]));
+            this.router.navigate(['/']);
+          } else {
+            this.messageError = "Usuario o contraseña incorrectos";
+          }
+        },
+        error => {
+          this.messageError = "Ha oucrido un error, pruebe de nuevo o intentelo más tarde";
         }
-      });
+      );
   }
    
 }
