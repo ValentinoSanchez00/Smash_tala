@@ -5,17 +5,30 @@ const db = require('../bd/db');
 // Obtener todos los pedidos
 router.get('/', (req, res) => {
     const query = `
+    SELECT 
+        p.coste, 
+        p.entregado, 
+        p.fecha, 
+        p.id_pedido, 
+        p.tipo_pago, 
+        c.direccion AS casa_nombre, 
+        cl.nombre AS cliente_nombre,
+        GROUP_CONCAT(CONCAT(h.nombre, ' (', subquery.cantidad, ')') ORDER BY h.nombre SEPARATOR ', ') AS hamburguesas
+    FROM pedido p
+    JOIN casa c ON p.casa_id_casa = c.id_casa
+    JOIN cliente cl ON p.cliente_id_cliente = cl.id_cliente
+    JOIN pedido_esta_hamburguesa peh ON p.id_pedido = peh.pedido_id_pedido
+    JOIN hamburguesa h ON peh.hamburguesa_id_hamburguesa = h.id_hamburguesa
+    JOIN (
         SELECT 
-            p.coste, 
-            p.entregado, 
-            p.fecha, 
-            p.id_pedido, 
-            p.tipo_pago, 
-            c.direccion AS casa_nombre, 
-            cl.nombre AS cliente_nombre
-        FROM pedido p
-        JOIN casa c ON p.casa_id_casa = c.id_casa
-        JOIN cliente cl ON p.cliente_id_cliente = cl.id_cliente
+            peh.pedido_id_pedido,
+            h.id_hamburguesa,
+            COUNT(*) AS cantidad
+        FROM pedido_esta_hamburguesa peh
+        JOIN hamburguesa h ON peh.hamburguesa_id_hamburguesa = h.id_hamburguesa
+        GROUP BY peh.pedido_id_pedido, h.id_hamburguesa
+    ) subquery ON p.id_pedido = subquery.pedido_id_pedido AND h.id_hamburguesa = subquery.id_hamburguesa
+    GROUP BY p.id_pedido
     `;
 
     db.query(query, (err, results) => {
@@ -27,11 +40,14 @@ router.get('/', (req, res) => {
     });
 });
 
+
+    
+
 // Obtener todos los pedidos de un cliente
 router.get('/cliente/:id', (req, res) => {
     const { id } = req.params;
     const query = `
-        SELECT p.id_pedido, p.coste, p.tipo_pago, p.fecha, 
+        SELECT p.id_pedido, p.coste, p.tipo_pago, p.fecha,p.entregado, 
         GROUP_CONCAT(DISTINCT h.nombre ORDER BY h.nombre ASC) AS hamburguesa, 
         GROUP_CONCAT(DISTINCT a.tipo_alergeno ORDER BY a.tipo_alergeno ASC) AS alergenos 
         FROM pedido p 
