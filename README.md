@@ -9,7 +9,6 @@ Smash Tala es un proyecto de TFG que simula un fast food de hamburguesas pero en
 - Angular (Frontend)
 - Node.js con Express (Backend)
 - MySQL (Base de datos)
-- Otros (puedes añadir más detalles si es necesario)
 
 ## 3. Requisitos Previos
 
