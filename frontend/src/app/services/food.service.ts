@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +13,7 @@ export class FoodService {
   constructor(private http: HttpClient) { }
 
 
-  getAll(): Observable<Hamburguer[]> {
+  getAll(): Observable<any> {
     let data=this.http.get<Hamburguer[]>(this.apiUrl);
     return data;
   }

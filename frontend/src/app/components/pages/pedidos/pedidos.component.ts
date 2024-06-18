@@ -1,8 +1,9 @@
-import { Router } from '@angular/router';
-import { PedidoService } from './../../../services/pedido.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { PedidoService } from './../../../services/pedido.service';
 import { SuccessModalComponent } from '../../partials/success-modal/success-modal.component';
+import io from 'socket.io-client';
 
 @Component({
   selector: 'app-pedidos',
@@ -10,46 +11,51 @@ import { SuccessModalComponent } from '../../partials/success-modal/success-moda
   styleUrls: ['./pedidos.component.css']
 })
 export class PedidosComponent implements OnInit, OnDestroy {
-  private intervalId: any;
+  private socket: any;
   allPedidos: any;
   pedidosFilter: any;
 
-  constructor(private PedidoService: PedidoService, public dialog: MatDialog, private Router: Router) {}
+  constructor(
+    private pedidoService: PedidoService,
+    public dialog: MatDialog,
+    private router: Router
+  ) {
+    this.socket = io('http://localhost:3000'); // Establecer la conexión con el servidor de Socket.IO
+  }
 
   ngOnInit(): void {
     this.comprobar();
     this.getPedidos();
-    this.intervalId = setInterval(() => {
+
+    // Escuchar el evento 'updatePedidos' emitido por el servidor
+    this.socket.on('updatePedidos', () => {
       this.getPedidos();
-    }, 5000);
-    //Si va a la nube la bd se activa
+    });
   }
 
   ngOnDestroy(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+    // Desconectar el socket al destruir el componente
+    this.socket.disconnect();
   }
-  comprobar(){
+
+  comprobar(): void {
     let isLoaded = sessionStorage.getItem('isLoad');
     console.log(isLoaded);
 
-    if(isLoaded === null || isLoaded === 'false') {
-      this.Router.navigate(['/home']);
-    }
-    else{
-      let user= JSON.parse(sessionStorage.getItem('user')! || '{}');
-      if(user.rol != 1){
-        this.Router.navigate(['/home']);
+    if (isLoaded === null || isLoaded === 'false') {
+      this.router.navigate(['/home']);
+    } else {
+      let user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      if (user.rol !== 1) {
+        this.router.navigate(['/home']);
       }
     }
-
   }
 
   async getPedidos(): Promise<void> {
     try {
-      const data = await this.PedidoService.getAllPedidos().toPromise();
-      this.allPedidos = data.map((pedido:any) => ({
+      const data = await this.pedidoService.getAllPedidos().toPromise();
+      this.allPedidos = data.map((pedido: any) => ({
         ...pedido,
         fecha: this.formatDate(pedido.fecha)
       }));
@@ -69,10 +75,8 @@ export class PedidosComponent implements OnInit, OnDestroy {
   }
 
   entregado(pedido: any, index: number): void {
-    this.PedidoService.entregarPedido(pedido.id_pedido).subscribe(
+    this.pedidoService.entregarPedido(pedido.id_pedido).subscribe(
       response => {
-
-
         // Ocultar el botón
         const button = document.getElementById(`pedido-${index}`);
         if (button) {

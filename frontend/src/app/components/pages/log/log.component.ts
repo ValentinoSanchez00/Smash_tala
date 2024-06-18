@@ -16,34 +16,36 @@ export class LogComponent implements OnInit, OnDestroy {
   maxDate: string = '';
   intervalId: any;
   showingAllLogs: boolean = false;
+  currentPage: number = 1;
+  totalPages: number = 0; // Inicializamos la propiedad
+  limit: number = 10;
 
   constructor(private logService: LogService, private Router: Router) { }
 
   ngOnInit(): void {
     this.comprobar();
-    this.getLogsMes();
-    this.startInterval(this.getLogsMes.bind(this), 5000);
+    this.getLogsMes(this.currentPage);
+    this.startInterval(this.getLogsMes.bind(this, this.currentPage), 5000);
   }
 
   ngOnDestroy(): void {
     this.clearInterval();
   }
 
-  comprobar(){
+  comprobar() {
     let isLoaded = sessionStorage.getItem('isLoad');
     console.log(isLoaded);
 
-    if(isLoaded === null || isLoaded === 'false') {
+    if (isLoaded === null || isLoaded === 'false') {
       this.Router.navigate(['/home']);
-    }
-    else{
-      let user= JSON.parse(sessionStorage.getItem('user')! || '{}');
-      if(user.rol != 2){
+    } else {
+      let user = JSON.parse(sessionStorage.getItem('user')! || '{}');
+      if (user.rol != 2) {
         this.Router.navigate(['/home']);
       }
     }
-
   }
+
   startInterval(callback: Function, interval: number) {
     this.clearInterval();
     this.intervalId = setInterval(callback, interval);
@@ -62,33 +64,36 @@ export class LogComponent implements OnInit, OnDestroy {
     }
   }
 
-  async getLogsMes() {
+  async getLogsMes(page: number = 1) {
     this.pauseInterval();
-    const data = await this.logService.getLogsMes().toPromise();
-    this.logs = data;
+    const data = await this.logService.getLogsMes(page, this.limit).toPromise();
+    this.logs = data.logs;
+    this.totalPages = Math.ceil(data.totalCount / this.limit);
     this.formatDates(this.logs);
     this.filteredLogs = [...this.logs];
     this.setMonthLimits();
     this.showingAllLogs = false;
-    this.startInterval(this.getLogsMes.bind(this), 5000);
+    this.startInterval(this.getLogsMes.bind(this, this.currentPage), 5000);
   }
 
-  async getAllLogs() {
+  async getAllLogs(page: number = 1) {
     this.pauseInterval();
-    const data = await this.logService.getLogs().toPromise();
-    this.logs = data;
+    const data = await this.logService.getLogs(page, this.limit).toPromise();
+    this.logs = data.logs;
+    this.totalPages = Math.ceil(data.totalCount / this.limit);
     this.formatDates(this.logs);
     this.filteredLogs = [...this.logs];
     this.clearDateLimits();
     this.showingAllLogs = true;
-    this.startInterval(this.getAllLogs.bind(this), 5000);
+    this.startInterval(this.getAllLogs.bind(this, this.currentPage), 5000);
   }
 
   toggleLogs() {
+    this.currentPage = 1;
     if (this.showingAllLogs) {
-      this.getLogsMes();
+      this.getLogsMes(this.currentPage);
     } else {
-      this.getAllLogs();
+      this.getAllLogs(this.currentPage);
     }
   }
 
@@ -137,5 +142,14 @@ export class LogComponent implements OnInit, OnDestroy {
     this.maxDate = '';
     this.startDate = '';
     this.endDate = '';
+  }
+
+  goToPage(page: number) {
+    if (this.showingAllLogs) {
+      this.getAllLogs(page);
+    } else {
+      this.getLogsMes(page);
+    }
+    this.currentPage = page;
   }
 }
