@@ -37,3 +37,13 @@
     </tr>
   </tbody>
 </table>
+<div class="d-flex justify-content-center align-items-center mb-2">
+  <button class="btn btn-secondary" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+    Anterior
+  </button>
+  <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
+  <button class="btn btn-secondary"  (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+    Siguiente
+  </button>
+</div>
+

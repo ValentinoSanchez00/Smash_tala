@@ -47,32 +47,44 @@ router.get('/casa/:id', (req, res) => {
 
 
 
-// Agregar un nuevo cliente
+// Agregar un nuevo cliente// Agregar un nuevo cliente
 router.post('/', (req, res) => {
   const { nombre, apellido, email, password } = req.body;
+  console.log(email)
   let idUser = 0;
 
-  MaxId()
-    .then((id) => {
-   
-      idUser = id+1;
+  const checkEmailSql = 'SELECT COUNT(*) AS count FROM cliente WHERE email = ?';
 
-      const sql = 'INSERT INTO cliente (id_cliente,nombre, apellido, email, password) VALUES (?, ?, ?, ?, ?)';
+  db.query(checkEmailSql, [email], (err, result) => {
+    if (err) {
+      console.error('Error al verificar el correo:', err);
+      res.status(500).json({ error: 'Error al verificar el correo' });
+    } else if (result[0].count > 0) {
+      console.error('Error: ya existe un usuario con ese correo');
+      res.json({ error: 'Error: ya existe un usuario con ese correo' });
+    } else {
+      MaxId()
+        .then((id) => {
+          idUser = id + 1;
 
-      db.query(sql, [idUser, nombre, apellido, email, password], (err, result) => {
-        if (err) {
+          const sql = 'INSERT INTO cliente (id_cliente, nombre, apellido, email, password) VALUES (?, ?, ?, ?, ?)';
+
+          db.query(sql, [idUser, nombre, apellido, email, password], (err, result) => {
+            if (err) {
               res.status(500).json({ error: 'Error al agregar el cliente' });
-        } else {
-        
-          res.status(201).json({ message: 'Cliente agregado correctamente' });
-        }
-      });
-    })
-    .catch((error) => {
-      console.error("Ocurrió un error al obtener el ID máximo:", error);
-      res.status(500).json({ error: 'Error al obtener el ID máximo' });
-    });
+            } else {
+              res.status(201).json({ message: 'Cliente agregado correctamente' });
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Ocurrió un error al obtener el ID máximo:", error);
+          res.status(500).json({ error: 'Error al obtener el ID máximo' });
+        });
+    }
+  });
 });
+
 
 // Actualizar un cliente existente
 router.put('/:id', (req, res) => {

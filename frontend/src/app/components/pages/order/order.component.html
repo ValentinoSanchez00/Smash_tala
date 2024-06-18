@@ -32,8 +32,9 @@
         <ng-container matColumnDef="entregado">
           <th mat-header-cell *matHeaderCellDef> Estado </th>
           <td mat-cell *matCellDef="let element"> 
-            <mat-icon *ngIf="element.entregado" color="primary">check_circle</mat-icon>
-            <mat-icon *ngIf="!element.entregado" color="warn">cancel</mat-icon>
+            <mat-icon *ngIf="element.entregado==1" color="primary">check_circle</mat-icon>
+            <mat-icon *ngIf="element.entregado==0" color="warn">cancel</mat-icon>
+            <mat-icon *ngIf="element.entregado==2" color="warn">hourglass_empty</mat-icon>
           </td>
         </ng-container>
 

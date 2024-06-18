@@ -7,10 +7,10 @@ import { HttpClient } from '@angular/common/http';
 export class LogService {
   private apiUrl = 'http://localhost:3000/log';
   constructor(private http: HttpClient) { }
-  getLogs() {
-    return this.http.get<any>(this.apiUrl);
+  getLogs(page: number = 1, limit: number = 10) {
+    return this.http.get<any>(this.apiUrl+`?page=${page}&limit=${limit}`);
   }
-  getLogsMes(){
-    return this.http.get<any>(this.apiUrl+"/mes");
+  getLogsMes(page: number = 1, limit: number = 10){
+    return this.http.get<any>(this.apiUrl+"/mes"+`?page=${page}&limit=${limit}`);
   }
 }
