@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../bd/db');
+const { promisify } = require('util');
+const queryAsync = promisify(db.query).bind(db);
 
 // Obtener todos los pedidos
 router.get('/', (req, res) => {
@@ -40,9 +42,6 @@ router.get('/', (req, res) => {
     });
 });
 
-
-    
-
 // Obtener todos los pedidos de un cliente
 router.get('/cliente/:id', (req, res) => {
     const { id } = req.params;
@@ -70,47 +69,46 @@ router.get('/cliente/:id', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    db.query('UPDATE pedido SET entregado = 1 WHERE id_pedido = ?', [id], (err, result) => {
-        if (err) {
-            console.error('Error al actualizar el pedido:', err);
-            return res.status(500).json({ error: 'Error al actualizar el pedido' });
-        }
-        if (result.affectedRows === 0) {
+    let coste = 0;
+    let email = '';
+
+    try {
+        // Actualizar el pedido
+        const updateResult = await queryAsync('UPDATE pedido SET entregado = 2, cambio_estado_programado = DATE_ADD(NOW(), INTERVAL 7 MINUTE) WHERE id_pedido = ?', [id]);
+        if (updateResult.affectedRows === 0) {
             return res.status(404).json({ error: 'Pedido no encontrado' });
         }
 
-        db.query('SELECT MAX(category_id) AS maxId FROM log', (err, result) => {
-            if (err) {
-                console.error('Error al obtener el max id_log:', err);
-                return res.status(500).json({ error: 'Error al obtener el max id_log' });
-            }
+        // Obtener el máximo id_log
+        const maxIdResult = await queryAsync('SELECT MAX(category_id) AS maxId FROM log');
+        const newIdLog = maxIdResult[0].maxId + 1;
 
-            const newIdLog = result[0].maxId + 1;
-            const formattedDate = formatDate(new Date());
-            const content = `El pedido con id ${id} se ha entregado de manera exitosa`;
-            
-            const insertQuery = 'INSERT INTO log (category_id, id_log, fecha, contenido) VALUES (?, ?, ?, ?)';
-            db.query(insertQuery, [newIdLog, 1, formattedDate, content], (err) => {
-                if (err) {
-                    console.error('Error al insertar en log:', err);
-                    return res.status(500).json({ error: 'Error al insertar en log' });
-                }
-                
-            });
+        // Obtener los datos del cliente
+        const clienteResult = await queryAsync('SELECT p.coste, c.email FROM pedido p JOIN cliente c ON p.cliente_id_cliente = c.id_cliente WHERE p.id_pedido = ?', [id]);
+        if (clienteResult.length === 0) {
+            return res.status(404).json({ error: 'Datos de cliente no encontrados' });
+        }
+        coste = clienteResult[0].coste;
+        email = clienteResult[0].email;
 
-            const insertQuery2='INSERT INTO jefe_ve_log(jefe_id,category_id) VALUES(1,?)';
-            db.query(insertQuery2, [newIdLog], (err) => {
-                if (err) {
-                    console.error('Error al insertar en log:', err);
-                    return res.status(500).json({ error: 'Error al insertar en log' });
-                }
-                 res.json({ message: 'Pedido actualizado y log insertado exitosamente' });
-            });
-           
-        });
-    });
+        // Formatear la fecha y crear el contenido del log
+        const formattedDate = formatDate(new Date());
+        const content = `El pedido de coste ${coste} de ${email} en la fecha ${formattedDate} se ha entregado de manera exitosa`;
+
+        // Insertar en la tabla log
+        await queryAsync('INSERT INTO log (category_id, id_log, fecha, contenido) VALUES (?, ?, ?, ?)', [newIdLog, 1, formattedDate, content]);
+
+        // Insertar en la tabla jefe_ve_log
+        await queryAsync('INSERT INTO jefe_ve_log (jefe_id, category_id) VALUES (1, ?)', [newIdLog]);
+
+        res.json({ message: 'Pedido actualizado y log insertado exitosamente' });
+
+    } catch (err) {
+        console.error('Error en la operación:', err);
+        res.status(500).json({ error: 'Error en la operación' });
+    }
 });
 
 // Insertar un nuevo pedido
